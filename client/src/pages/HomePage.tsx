@@ -8,12 +8,13 @@ import { useGoldPrice } from "../hooks/useGoldPrice";
 import FloatingButtons from "../components/FloatingButtons";
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
+import { Link } from "react-router-dom";
 
-import banner1 from '../assets/banner/banner1.jpeg'
-import banner2 from '../assets/banner/banner1.jpeg'
-import banner3 from '../assets/banner/banner1.jpeg'
+import banner1 from '../assets/banner/banner1.png'
+import banner2 from '../assets/banner/banner2.png'
+import banner3 from '../assets/banner/banner3.png'
 
-import { useLenis } from "../providers/LenisProvider";
+// import { useLenis } from "../providers/LenisProvider";
 
 import {
     ChevronLeft,
@@ -37,6 +38,7 @@ import {
     Phone,
     ArrowRight
 } from "lucide-react";
+import { AuthModal } from "./AuthModal";
 
 
 gsap.registerPlugin(ScrollTrigger);
@@ -150,7 +152,8 @@ export default function HomePage() {
     const [activeCategory, setActiveCategory] = useState<string>("All");
     const [searchQuery, setSearchQuery] = useState("");
 
-    const lenis = useLenis();
+
+    // const lenis = useLenis();
 
     const [cart, setCart] = useState<CartItem[]>([]);
     const [wishlist, setWishlist] = useState<Product[]>([]);
@@ -169,6 +172,9 @@ export default function HomePage() {
     const [faqOpenId, setFaqOpenId] = useState<string | null>(null);
 
     const { data: goldRates } = useGoldPrice();
+    const [isAuthOpen, setIsAuthOpen] = useState(false);
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+
 
     useEffect(() => {
         const ctx = gsap.context(() => {
@@ -223,20 +229,27 @@ export default function HomePage() {
     }, []);
 
     // Update body scroll blocking depending on modals status
+    // Update body scroll blocking depending on modals status
     useEffect(() => {
-        const shouldLock = isPrimeModalOpen || isCartOpen || isWishlistOpen || showCheckoutSuccess;
+        const shouldLock = isPrimeModalOpen || isCartOpen || isWishlistOpen || showCheckoutSuccess || isAuthOpen;
+
         if (shouldLock) {
-            lenis.stop();
+            // If you use Lenis scroll provider, uncomment the line below:
+            // lenis.stop();
+            document.body.style.overflow = "hidden";
             document.body.classList.add("modal-open");
         } else {
-            lenis.start();
+            // If you use Lenis scroll provider, uncomment the line below:
+            // lenis.start();
+            document.body.style.overflow = "unset";
             document.body.classList.remove("modal-open");
         }
+
         return () => {
-            lenis.start();
+            document.body.style.overflow = "unset";
             document.body.classList.remove("modal-open");
         };
-    }, [isPrimeModalOpen, isCartOpen, isWishlistOpen, showCheckoutSuccess, lenis]);
+    }, [isPrimeModalOpen, isCartOpen, isWishlistOpen, showCheckoutSuccess, isAuthOpen]);
 
     // Hero navigate handlers
     const nextHeroSlide = () => {
@@ -362,6 +375,7 @@ export default function HomePage() {
                 onSearchChange={setSearchQuery}
                 activeCategory={activeCategory}
                 onCategoryChange={setActiveCategory}
+                onAuthOpen={() => setIsAuthOpen(true)}
             />
 
             <main className="flex-1 w-full flex flex-col gap-0">
@@ -523,156 +537,129 @@ export default function HomePage() {
                 </section>
 
                 {/* SECTION B: FEATURED COLLECTION / BEST SELLERS */}
-                <section className="section-padding bg-[var(--color-bg)]" id="featured-collection-section">
-                    <div className="container flex flex-col items-center">
+                <section className="reveal-section py-20 bg-[var(--color-bg)]" id="collection-grid">
+                    <div className="max-w-7xl mx-auto px-6">
 
-                        {/* Header headings */}
-                        <div className="text-center mb-10 reveal-section">
-                            <span className="section-label">Our Collection</span>
-                            <h2 className="text-4xl md:text-5xl font-primary text-[var(--color-teal)] font-normal tracking-wide">
-                                Best Sellers
+                        {/* Section Title Header */}
+                        <div className="flex flex-col items-center mb-16 text-center">
+                            <span className="section-label">Selected Statement Masterpieces</span>
+                            <h2 className="font-primary text-3xl md:text-4xl text-[var(--color-text)] tracking-wide font-light">
+                                The Best Seller Showcase
                             </h2>
-                            <p className="mt-3 font-secondary text-sm text-[var(--color-text-muted)] max-w-lg mx-auto">
-                                Discover pieces styled for timeless prominence, curated on premium gold and certificates.
-                            </p>
+                            <div className="w-12 h-[1px] bg-[var(--color-cream)] mt-4" />
                         </div>
 
-                        {/* Filter Tabs Rows */}
-                        <div className="w-full max-w-2xl flex flex-wrap justify-center gap-2 md:gap-3.5 mb-12">
-                            {["All", "Rings", "Necklaces", "Earrings", "Bracelets"].map((category) => {
-                                const isActive = activeCategory === category;
+                        {/* Dynamic Interactive Products Grid */}
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-12">
+                            {filteredProducts.map((product) => {
+                                const isInWishlist = isProductInWishlist(product.id);
+                                const standardPrice = getProductPrice(product);
+
                                 return (
-                                    <button
-                                        key={category}
-                                        onClick={() => setActiveCategory(category)}
-                                        className={`relative px-5 py-2.5 rounded-full font-secondary text-xs uppercase tracking-wider font-semibold border-none cursor-pointer overflow-hidden transition-all duration-300 ${isActive ? 'text-white' : 'bg-transparent text-[var(--color-teal)] border border-[var(--color-border-subtle)] hover:border-[var(--color-teal)] bg-[var(--color-bg-secondary)]'}`}
+                                    <motion.div
+                                        key={product.id}
+                                        layout
+                                        initial={{ opacity: 0, y: 20 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        exit={{ opacity: 0, y: 20 }}
+                                        transition={{ duration: 0.5 }}
+                                        className="group relative flex flex-col justify-between bg-white/40 backdrop-blur-sm rounded-xl p-4 border border-[var(--color-border-subtle)] hover:border-[var(--color-cream)] hover:shadow-xl hover:shadow-[var(--color-cream)]/10 transition-all duration-500 ease-out"
                                     >
-                                        <span className="relative z-1">{category}</span>
-                                        {isActive && (
-                                            <motion.div
-                                                layoutId="active-collection-tab-background"
-                                                className="absolute inset-0 bg-[var(--color-teal)]"
-                                                transition={{ type: "spring", damping: 20, stiffness: 180 }}
-                                            />
-                                        )}
-                                    </button>
-                                );
-                            })}
-                        </div>
-
-                        {/* Products interactive grid */}
-                        {filteredProducts.length === 0 ? (
-                            <div className="w-full py-16 text-center text-[var(--color-text-muted)] italic font-secondary">
-                                No matching products found under category selection or search keyword criteria
-                            </div>
-                        ) : (
-                            <div className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 max-w-6xl">
-                                {filteredProducts.map((product) => {
-                                    const itemPrice = getProductPrice(product);
-                                    const inWishlist = isProductInWishlist(product.id);
-                                    return (
-                                        <motion.div
-                                            layout
-                                            key={product.id}
-                                            initial={{ opacity: 0, y: 30 }}
-                                            whileInView={{ opacity: 1, y: 0 }}
-                                            viewport={{ once: true, margin: "-100px" }}
-                                            transition={{ duration: 0.5 }}
-                                            className="group flex flex-col bg-[var(--color-white)] border border-[var(--color-border-subtle)] rounded-lg overflow-hidden relative shadow-sm hover:shadow-md transition-shadow"
+                                        {/* 1. Wrap Image and Title Meta details inside a Link to route to details view */}
+                                        <Link
+                                            to={`/product/${product.slug}`}
+                                            className="no-underline text-inherit flex flex-col flex-1"
                                         >
-                                            {/* Interactive aspect 4/5 sizing card wrapper */}
-                                            <div className="relative w-full aspect-[4/5] bg-[var(--color-bg-secondary)] overflow-hidden">
-                                                <motion.div
-                                                    whileHover={{ scale: 1.05 }}
-                                                    transition={{ duration: 0.6 }}
-                                                    className="w-full h-full"
-                                                >
-                                                    <img
-                                                        src={product.image}
-                                                        alt={product.name}
-                                                        className="w-full h-full object-cover object-center"
-                                                        referrerPolicy="no-referrer"
-                                                    />
-                                                </motion.div>
+                                            {/* Image Preview Window Frame Container */}
+                                            <div className="relative aspect-square w-full rounded-lg overflow-hidden bg-[var(--color-bg-secondary)] mb-5">
+                                                <img
+                                                    src={product.image}
+                                                    alt={product.name}
+                                                    className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out"
+                                                    loading="lazy"
+                                                />
 
-                                                {/* Top Left category/badge Tags */}
-                                                <div className="absolute top-4 left-4 flex flex-col gap-1.5 z-2">
-                                                    {product.tags.map((tag, i) => (
+                                                {/* Badge Indicators Layer */}
+                                                <div className="absolute top-3 left-3 flex flex-col gap-1.5 z-10">
+                                                    {product.tags?.map((tag) => (
                                                         <span
-                                                            key={i}
-                                                            className="bg-[var(--color-teal)] text-white text-[9px] font-secondary tracking-widest font-extrabold uppercase px-2.5 py-1 rounded-full shadow-xs"
+                                                            key={tag}
+                                                            className={`font-secondary text-[9px] tracking-widest font-semibold uppercase px-2 py-1 rounded-sm text-white ${tag === "BESTSELLER" ? "bg-[var(--color-teal)]" : "bg-amber-700"}`}
                                                         >
                                                             {tag}
                                                         </span>
                                                     ))}
                                                 </div>
-
-                                                {/* Top Right Karat Info */}
-                                                <div className="absolute top-4 right-4 bg-white/92 backdrop-blur-xs border border-[var(--color-border-subtle)] text-[var(--color-teal)] text-[11px] font-display font-semibold px-2.5 py-0.5 rounded-sm shadow-xs z-2">
-                                                    {product.karat} Gold
-                                                </div>
-
-                                                {/* Coupon tag Ribbons (if present) */}
-                                                {product.couponTag && (
-                                                    <div className="absolute bottom-4 left-0 bg-[var(--color-cream)] text-[var(--color-teal)] text-[8px] md:text-[9px] font-secondary font-bold tracking-widest uppercase px-3 py-1 shadow-xs z-2">
-                                                        {product.couponTag} Applied (5% Off Extra)
-                                                    </div>
-                                                )}
-
-                                                {/* Favorite heart overlay (framer motion hover toggle action) */}
-                                                <button
-                                                    onClick={() => toggleWishlist(product)}
-                                                    className="absolute bottom-4 right-4 w-9 h-9 rounded-full bg-white/90 hover:bg-white text-[var(--color-teal)] shadow-sm hover:shadow flex items-center justify-center border-none cursor-pointer transition-all z-2"
-                                                >
-                                                    <Heart size={16} className={`transition-colors ${inWishlist ? 'fill-red-500 text-red-500' : 'text-[var(--color-teal)]'}`} />
-                                                </button>
-
-                                                {/* Slide Hover CTA Overlay Drawer */}
-                                                <div className="absolute bottom-0 left-0 right-0 h-1/3 bg-linear-gradient(to top, rgba(28,59,72,0.95), rgba(28,59,72,0.8)) flex flex-col justify-end p-4 translate-y-[101%] group-hover:translate-y-0 transition-transform duration-[400ms] ease-out z-1">
-                                                    <button
-                                                        onClick={() => addToCart(product)}
-                                                        className="w-full bg-[var(--color-cream)] hover:bg-white text-[var(--color-teal)] font-secondary text-[11px] tracking-widest font-bold uppercase py-2.5 rounded-sm transition-all duration-300 cursor-pointer shadow-sm flex items-center justify-center gap-2"
-                                                    >
-                                                        <BagIcon size={13} /> Add To Cart
-                                                    </button>
-                                                </div>
                                             </div>
 
-                                            {/* Content panel */}
-                                            <div className="p-4 flex flex-col gap-1 bg-white">
-                                                <div className="flex justify-between items-start">
-                                                    <h3 className="font-primary text-lg text-[var(--color-teal)] font-normal group-hover:text-[var(--color-cream)] transition-colors">
+                                            {/* Text Metadata Specifications Block */}
+                                            <div className="flex flex-col flex-1 px-1">
+                                                <div className="flex justify-between items-start gap-2 mb-1">
+                                                    <h3 className="font-primary text-base text-[var(--color-text)] tracking-wide font-light line-clamp-1 group-hover:text-[var(--color-teal-light)] transition-colors duration-300">
                                                         {product.name}
                                                     </h3>
-                                                    <span className="font-mono text-sm font-semibold text-[var(--color-teal)]">
-                                                        ₹{itemPrice.toLocaleString("en-IN")}
+                                                    <span className="font-secondary text-[11px] font-medium tracking-wider text-[var(--color-teal)] bg-[var(--color-cream-light)] px-2 py-0.5 rounded-full whitespace-nowrap self-center">
+                                                        {product.karat}
                                                     </span>
                                                 </div>
-                                                <p className="font-secondary text-xs text-[var(--color-text-muted)] flex justify-between">
-                                                    <span>{product.category}</span>
-                                                    <span className="italic text-[10px]">Tax & Craftsmanship Included</span>
+
+                                                <p className="font-secondary text-xs text-[var(--color-text-muted)] tracking-wider mb-4">
+                                                    {product.category}
                                                 </p>
                                             </div>
-                                        </motion.div>
-                                    );
-                                })}
-                            </div>
-                        )}
+                                        </Link>
 
-                        {/* Bottom generic Collections navigators */}
-                        <div className="mt-16 reveal-section text-center">
-                            <a
-                                href="#featured-collection-section"
-                                onClick={() => {
-                                    setActiveCategory("All");
-                                    setSearchQuery("");
-                                }}
-                                className="inline-block border border-[var(--color-teal)] text-[var(--color-teal)] font-secondary text-xs uppercase tracking-[0.2em] font-semibold py-4 px-10 hover:bg-[var(--color-teal)] !hover:text-white transition-all duration-300"
-                            >
-                                View All Collections
-                            </a>
+                                        {/* 2. Floating Wishlist Button placed outside Link context using stopPropagation */}
+                                        <button
+                                            onClick={(e) => {
+                                                e.preventDefault();
+                                                e.stopPropagation(); // Prevents link navigation click trigger
+                                                if (!isLoggedIn) {
+                                                    setIsAuthOpen(true);
+                                                } else {
+                                                    toggleWishlist(product);
+                                                }
+                                            }}
+                                            aria-label={isInWishlist ? "Remove from vault" : "Add to vault"}
+                                            className="absolute top-7 right-7 w-9 h-9 rounded-full bg-white/90 backdrop-blur-md flex items-center justify-center shadow-md text-[var(--color-text-muted)] hover:text-rose-600 border border-[var(--color-border-subtle)] hover:border-transparent transition-all duration-300 cursor-pointer z-20 focus:outline-none"
+                                        >
+                                            <Heart
+                                                className={`w-4 h-4 transition-transform duration-300 group-hover:scale-110 ${isInWishlist ? "fill-rose-600 stroke-rose-600" : "stroke-[1.5]"}`}
+                                            />
+                                        </button>
+
+                                        {/* Action Row Pricing Tag & Intercept Checkout Cart Triggers outside Link context */}
+                                        <div className="flex items-center justify-between mt-auto pt-3 border-t border-[var(--color-border-subtle)] px-1 z-20">
+                                            <div className="flex flex-col">
+                                                <span className="font-secondary text-[10px] text-[var(--color-text-muted)] uppercase tracking-widest leading-none mb-1">
+                                                    Estimated Price
+                                                </span>
+                                                <span className="font-secondary text-sm font-semibold text-[var(--color-text)]">
+                                                    ₹{standardPrice.toLocaleString("en-IN")}
+                                                </span>
+                                            </div>
+
+                                            <button
+                                                onClick={(e) => {
+                                                    e.preventDefault();
+                                                    e.stopPropagation(); // Prevents link navigation click trigger
+                                                    if (!isLoggedIn) {
+                                                        setIsAuthOpen(true);
+                                                    } else {
+                                                        addToCart(product);
+                                                    }
+                                                }}
+                                                className="flex items-center gap-2 bg-[var(--color-teal)] hover:bg-[var(--color-teal-light)] text-white px-4 py-2.5 rounded-md font-secondary text-xs uppercase tracking-widest transition-all duration-300 ease-out border-none cursor-pointer focus:outline-none focus:ring-1 focus:ring-[var(--color-teal)]"
+                                            >
+                                                <ShoppingBag className="w-3.5 h-3.5 stroke-[1.75]" />
+                                                <span>Acquire</span>
+                                            </button>
+                                        </div>
+
+                                    </motion.div>
+                                );
+                            })}
                         </div>
-
                     </div>
                 </section>
 
@@ -1570,6 +1557,17 @@ export default function HomePage() {
                     </>
                 )}
             </AnimatePresence>
+
+            <AnimatePresence>
+                {isAuthOpen && (
+                    <AuthModal
+                        isOpen={isAuthOpen}
+                        onClose={() => setIsAuthOpen(false)}
+                    />
+                )}
+            </AnimatePresence>
+
+
 
         </div>
     );

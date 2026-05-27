@@ -7,7 +7,7 @@ import {
 import { useLenis } from "../providers/LenisProvider";
 import logo from "../assets/logo/logo.png";
 import { useGoldPrice } from "../hooks/useGoldPrice";
-
+import { useNavigate, useLocation } from "react-router-dom";
 
 const MOCK_GOLD_RATES = {
   "9K": 4847,
@@ -20,7 +20,7 @@ const MOCK_GOLD_RATES = {
 
 const CATEGORIES = [
   "All", "Rings", "Necklaces", "Earrings",
-  "Bangles", "Bracelets", "Pendants", "Chains",
+  "Bangles", "Pendants"
 ];
 
 const SEARCH_SUGGESTIONS = [
@@ -31,11 +31,26 @@ export default function Navbar({
   onSearchChange,
   activeCategory,
   onCategoryChange,
+  onAuthOpen,
 }: {
   onSearchChange: (query: string) => void;
   activeCategory: string;
   onCategoryChange: (category: string) => void;
+  onAuthOpen: () => void;
 }) {
+
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const handleCategoryClick = (category: string) => {
+    if (location.pathname === "/products") {
+      // If already on the products page, change state instantly
+      onCategoryChange(category);
+    } else {
+      navigate(`/products?category=${encodeURIComponent(category)}`);
+    }
+  };
+
   const [isAnnouncementVisible, setIsAnnouncementVisible] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [isSearchFocused, setIsSearchFocused] = useState(false);
@@ -347,24 +362,24 @@ export default function Navbar({
             </div>
 
             {/* Right: Icon Actions */}
-            <div className="flex items-center gap-2 sm:gap-3">
+            <div className="flex items-center gap-2 sm:gap-4 md:gap-6 text-[var(--color-text)]">
               <button
-                className="relative text-[var(--color-teal)] hover:text-[var(--color-teal-light)] transition-colors p-1.5 cursor-pointer"
-                aria-label="Wishlist"
+                onClick={onAuthOpen} // <-- Opens AuthModal
+                className="hover:text-[var(--color-text-muted)] transition-colors p-1.5 cursor-pointer bg-transparent border-none"
               >
-                <Heart size={19} />
+                <Heart size={18} className="sm:w-[20px] sm:h-[20px]" />
               </button>
               <button
-                className="relative text-[var(--color-teal)] hover:text-[var(--color-teal-light)] transition-colors p-1.5 cursor-pointer"
-                aria-label="Cart"
+                onClick={onAuthOpen} // <-- Opens AuthModal
+                className="hover:text-[var(--color-text-muted)] transition-colors p-1.5 cursor-pointer bg-transparent border-none"
               >
-                <ShoppingBag size={19} />
+                <ShoppingBag size={18} className="sm:w-[20px] sm:h-[20px]" />
               </button>
               <button
-                className="relative text-[var(--color-teal)] hover:text-[var(--color-teal-light)] transition-colors p-1.5 cursor-pointer"
-                aria-label="Account"
+                onClick={onAuthOpen} // <-- Opens AuthModal
+                className="hover:text-[var(--color-text-muted)] transition-colors p-1.5 cursor-pointer bg-transparent border-none"
               >
-                <User size={19} />
+                <User size={18} className="sm:w-[20px] sm:h-[20px]" />
               </button>
             </div>
           </div>
@@ -382,10 +397,10 @@ export default function Navbar({
                 return (
                   <button
                     key={category}
-                    onClick={() => onCategoryChange(category)}
-                    className={`py-2 cursor-pointer transition-all duration-300 relative whitespace-nowrap bg-transparent border-none ${isActive
-                      ? "text-[var(--color-teal)] font-bold"
-                      : "text-[var(--color-text-muted)] hover:text-[var(--color-teal)]"
+                    onClick={() => handleCategoryClick(category)}
+                    className={`font-secondary text-[11px] uppercase tracking-[0.2em] transition-all duration-300 relative py-1 cursor-pointer bg-transparent border-none ${activeCategory === category
+                      ? "text-[var(--color-text)] font-semibold"
+                      : "text-[var(--color-text-muted)] hover:text-[var(--color-text)]"
                       }`}
                   >
                     {category}
@@ -494,15 +509,24 @@ export default function Navbar({
 
                 {/* Bottom actions */}
                 <div className="flex gap-5 mt-8 pt-6 border-t border-white/20">
-                  <button className="flex items-center gap-1.5 text-[var(--color-cream)] hover:text-white transition-colors text-xs font-secondary cursor-pointer bg-transparent border-none">
+                  <button
+                    onClick={onAuthOpen} // <-- Opens AuthModal
+                    className="flex items-center gap-1.5 text-[var(--color-cream)] hover:text-white transition-colors text-xs font-secondary cursor-pointer bg-transparent border-none"
+                  >
                     <Heart size={16} />
                     <span>Wishlist</span>
                   </button>
-                  <button className="flex items-center gap-1.5 text-[var(--color-cream)] hover:text-white transition-colors text-xs font-secondary cursor-pointer bg-transparent border-none">
+                  <button
+                    onClick={onAuthOpen} // <-- Opens AuthModal
+                    className="flex items-center gap-1.5 text-[var(--color-cream)] hover:text-white transition-colors text-xs font-secondary cursor-pointer bg-transparent border-none"
+                  >
                     <ShoppingBag size={16} />
                     <span>Cart</span>
                   </button>
-                  <button className="flex items-center gap-1.5 text-[var(--color-cream)] hover:text-white transition-colors text-xs font-secondary cursor-pointer bg-transparent border-none">
+                  <button
+                    onClick={onAuthOpen} // <-- Opens AuthModal
+                    className="flex items-center gap-1.5 text-[var(--color-cream)] hover:text-white transition-colors text-xs font-secondary cursor-pointer bg-transparent border-none"
+                  >
                     <User size={16} />
                     <span>Account</span>
                   </button>
