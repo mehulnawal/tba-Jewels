@@ -12,6 +12,7 @@ import WishlistPage from "./pages/Wishlist";
 import CartPage from "./pages/Cart";
 import { AuthModal, AuthModel } from "./pages/AuthModal";
 import CheckoutPage from "./pages/Checkout";
+import NotFoundPage from "./pages/404Page";
 
 const IS_COMING_SOON = false;
 
@@ -67,16 +68,8 @@ export default function App() {
             /orders
           */}
 
-          <Route
-            path="*"
-            element={
-              <div className="min-h-screen flex items-center justify-center">
-                <h1 className="text-3xl font-primary">
-                  404 - Page Not Found
-                </h1>
-              </div>
-            }
-          />
+          <Route path="*" element={<NotFoundPage />} />
+
         </Routes>
       </BrowserRouter>
     </ReactQueryProvider>
