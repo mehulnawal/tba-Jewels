@@ -149,11 +149,20 @@ export default function Navbar({
   };
 
   const handleCategorySelect = (category: string) => {
-    onCategoryChange(category);
+    // 1. Trigger the smart redirection / state change logic you already wrote
+    handleCategoryClick(category);
+
+    // 2. Close the mobile drawer safely
     setIsMobileMenuOpen(false);
-    document
-      .getElementById("featured-collection-section")
-      ?.scrollIntoView({ behavior: "smooth" });
+
+    // 3. Optional: Only attempt to scroll if the user is actually on the home/landing layout
+    if (location.pathname !== "/products") {
+      setTimeout(() => {
+        document
+          .getElementById("featured-collection-section")
+          ?.scrollIntoView({ behavior: "smooth" });
+      }, 100); // Small timeout gives the page a brief moment to process transitions
+    }
   };
 
   return (

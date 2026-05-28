@@ -367,8 +367,8 @@ export default function ProductsPage() {
                                     className="w-full accent-[var(--color-teal)] cursor-pointer"
                                 />
                                 <div className="flex justify-between text-[11px] text-[var(--color-text-muted)] font-mono mt-1.5">
-                                    <span>饰30,000</span>
-                                    <span className="text-[var(--color-teal)] font-semibold">饰{priceRange.toLocaleString("en-IN")}</span>
+                                    <span>₹30,000</span>
+                                    <span className="text-[var(--color-teal)] font-semibold">₹{priceRange.toLocaleString("en-IN")}</span>
                                 </div>
                             </div>
 
@@ -485,7 +485,7 @@ export default function ProductsPage() {
                                                             <div>
                                                                 <span className="block text-[8px] uppercase tracking-widest text-[var(--color-text-muted)]">Base Value</span>
                                                                 <span className="font-secondary text-xs md:text-sm font-medium text-[var(--color-teal)] font-mono">
-                                                                    饰{dynamicStartingPrice.toLocaleString("en-IN")}
+                                                                    ₹{dynamicStartingPrice.toLocaleString("en-IN")}
                                                                 </span>
                                                             </div>
                                                             <span className="text-[9px] text-[var(--color-text-muted)] italic">
@@ -513,6 +513,216 @@ export default function ProductsPage() {
                         <ArrowUpDown size={14} /> <span>Sort</span>
                     </button>
                 </div>
+
+                {/* MOBILE DEDICATED ANCHORED FILTER BOTTOM SHEET MODAL */}
+                <AnimatePresence>
+                    {isMobileFilterOpen && (
+                        <>
+                            <motion.div
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                exit={{ opacity: 0 }}
+                                onClick={() => setIsMobileFilterOpen(false)}
+                                className="fixed inset-0 bg-black/60 z-[350]"
+                            />
+
+                            <motion.div
+                                initial={{ y: "100%" }}
+                                animate={{ y: 0 }}
+                                exit={{ y: "100%" }}
+                                transition={{ type: "spring", damping: 25, stiffness: 200 }}
+                                className="fixed bottom-0 left-0 right-0 max-h-[85vh] bg-[var(--color-bg)] rounded-t-[var(--radius-xl)] z-[360] overflow-y-auto p-6 shadow-[0_-8px_32px_rgba(0,0,0,0.15)] pb-24 text-[var(--color-text)]"
+                            >
+                                <div className="flex items-center justify-between border-b border-[var(--color-border-subtle)] pb-4 mb-4">
+                                    <h3 className="font-primary text-lg text-[var(--color-teal)] font-medium">Refinement Filter</h3>
+                                    <button
+                                        onClick={() => setIsMobileFilterOpen(false)}
+                                        className="p-1 rounded-full bg-[var(--color-bg-secondary)] text-[var(--color-text)] cursor-pointer"
+                                    >
+                                        <X size={18} />
+                                    </button>
+                                </div>
+
+                                {/* Sync Category to Global Search Hook */}
+                                <div className="mb-5">
+                                    <h4 className="text-[10px] uppercase tracking-[0.2em] text-[var(--color-text-muted)] font-bold mb-2">
+                                        Collections Category
+                                    </h4>
+                                    <div className="flex flex-wrap gap-2">
+                                        {["All", "Rings", "Necklaces", "Earrings", "Bangles", "Pendants"].map((cat) => (
+                                            <button
+                                                key={cat}
+                                                onClick={() => handleFilterCategoryChange(cat)}
+                                                className={`text-xs px-3 py-1.5 rounded-full transition-all cursor-pointer ${selectedCategory === cat
+                                                    ? "bg-[var(--color-teal)] text-white"
+                                                    : "bg-white text-[var(--color-text-secondary)] border border-[var(--color-border)]"
+                                                    }`}
+                                            >
+                                                {cat}
+                                            </button>
+                                        ))}
+                                    </div>
+                                </div>
+
+                                <div className="mb-5">
+                                    <h4 className="text-[10px] uppercase tracking-[0.2em] text-[var(--color-text-muted)] font-bold mb-2">
+                                        Gold Karat Purity
+                                    </h4>
+                                    <div className="flex flex-wrap gap-2">
+                                        {["All", "14K", "18K", "22K", "24K"].map((k) => (
+                                            <button
+                                                key={k}
+                                                onClick={() => setSelectedKarat(k)}
+                                                className={`text-xs px-4 py-1.5 rounded-sm transition-all cursor-pointer ${selectedKarat === k
+                                                    ? "bg-[var(--color-teal)] text-white border border-[var(--color-teal)]"
+                                                    : "bg-white text-[var(--color-text-secondary)] border border-[var(--color-border)]"
+                                                    }`}
+                                            >
+                                                {k}
+                                            </button>
+                                        ))}
+                                    </div>
+                                </div>
+
+                                <div className="mb-5">
+                                    <h4 className="text-[10px] uppercase tracking-[0.2em] text-[var(--color-text-muted)] font-bold mb-1">
+                                        Financial Boundary Threshold
+                                    </h4>
+                                    <input
+                                        type="range"
+                                        min="30000"
+                                        max="1000000"
+                                        step="10000"
+                                        value={priceRange}
+                                        onChange={(e) => setPriceRange(Number(e.target.value))}
+                                        className="w-full accent-[var(--color-teal)] cursor-pointer mt-2"
+                                    />
+                                    <div className="flex justify-between text-[11px] font-mono mt-1 text-[var(--color-text-muted)]">
+                                        <span>₹30K</span>
+                                        <span className="text-[var(--color-teal)] font-bold">₹{priceRange.toLocaleString("en-IN")} Max</span>
+                                    </div>
+                                </div>
+
+                                <div className="mb-5">
+                                    <h4 className="text-[10px] uppercase tracking-[0.2em] text-[var(--color-text-muted)] font-bold mb-2">
+                                        Assurance Agency Seal
+                                    </h4>
+                                    <div className="grid grid-cols-2 gap-2">
+                                        {["All", "BIS Hallmarked", "GIA Certified", "IGI Certified"].map((cert) => (
+                                            <button
+                                                key={cert}
+                                                onClick={() => setSelectedCert(cert)}
+                                                className={`text-xs py-2 px-3 text-left border rounded-xs transition-all cursor-pointer flex items-center justify-between ${selectedCert === cert
+                                                    ? "border-[var(--color-teal)] bg-[var(--color-teal)]/5 text-[var(--color-teal)] font-medium"
+                                                    : "border-[var(--color-border)] text-[var(--color-text-secondary)] bg-white"
+                                                    }`}
+                                            >
+                                                <span>{cert}</span>
+                                                {selectedCert === cert && <Check size={12} />}
+                                            </button>
+                                        ))}
+                                    </div>
+                                </div>
+
+                                <div className="border-t border-[var(--color-border-subtle)] pt-4 flex flex-col gap-3">
+                                    <label className="flex items-center justify-between text-xs text-[var(--color-text-secondary)]">
+                                        <span>Show Highlighted Curator Choices Only</span>
+                                        <input
+                                            type="checkbox"
+                                            checked={toggleFeaturedOnly}
+                                            onChange={(e) => setToggleFeaturedOnly(e.target.checked)}
+                                            className="accent-[var(--color-teal)] w-4 h-4"
+                                        />
+                                    </label>
+                                    <label className="flex items-center justify-between text-xs text-[var(--color-text-secondary)]">
+                                        <span>Show Immediate Ready Dispatch Only</span>
+                                        <input
+                                            type="checkbox"
+                                            checked={toggleInStockOnly}
+                                            onChange={(e) => setToggleInStockOnly(e.target.checked)}
+                                            className="accent-[var(--color-teal)] w-4 h-4"
+                                        />
+                                    </label>
+                                </div>
+
+                                <div className="mt-6 pt-2">
+                                    <button
+                                        onClick={() => setIsMobileFilterOpen(false)}
+                                        className="w-full bg-[var(--color-teal)] text-white text-xs font-secondary uppercase tracking-widest py-3 rounded-[var(--radius-md)] cursor-pointer"
+                                    >
+                                        Apply Selections ({filteredAndSortedProducts.length} Items)
+                                    </button>
+                                    <button
+                                        onClick={() => {
+                                            clearAllFilters();
+                                            setIsMobileFilterOpen(false);
+                                        }}
+                                        className="w-full bg-transparent text-[var(--color-text-muted)] text-xs font-secondary uppercase tracking-widest py-2.5 mt-2 cursor-pointer"
+                                    >
+                                        Clear All Filters
+                                    </button>
+                                </div>
+                            </motion.div>
+                        </>
+                    )}
+                </AnimatePresence>
+
+                {/* MOBILE DEDICATED ANCHORED SORT ORDER BOTTOM SHEET */}
+                <AnimatePresence>
+                    {isMobileSortOpen && (
+                        <>
+                            <motion.div
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                exit={{ opacity: 0 }}
+                                onClick={() => setIsMobileSortOpen(false)}
+                                className="fixed inset-0 bg-black/60 z-[350]"
+                            />
+
+                            <motion.div
+                                initial={{ y: "100%" }}
+                                animate={{ y: 0 }}
+                                exit={{ y: "100%" }}
+                                transition={{ type: "spring", damping: 25, stiffness: 220 }}
+                                className="fixed bottom-0 left-0 right-0 bg-[var(--color-bg)] rounded-t-[var(--radius-xl)] z-[360] p-6 shadow-[0_-8px_32px_rgba(0,0,0,0.15)] pb-12 text-[var(--color-text)]"
+                            >
+                                <div className="flex items-center justify-between border-b border-[var(--color-border-subtle)] pb-4 mb-4">
+                                    <h3 className="font-primary text-lg text-[var(--color-teal)] font-medium">Sequence Matrix</h3>
+                                    <button
+                                        onClick={() => setIsMobileSortOpen(false)}
+                                        className="p-1 rounded-full bg-[var(--color-bg-secondary)] text-[var(--color-text)] cursor-pointer"
+                                    >
+                                        <X size={18} />
+                                    </button>
+                                </div>
+
+                                <div className="flex flex-col gap-1">
+                                    {[
+                                        { value: "featured", label: "Curated Connoisseur Choices" },
+                                        { value: "price-asc", label: "Financial Scaling: Low to High" },
+                                        { value: "price-desc", label: "Financial Scaling: High to Low" },
+                                        { value: "reviews", label: "Appreciation Volume Reviews Rank" },
+                                    ].map((opt) => (
+                                        <button
+                                            key={opt.value}
+                                            onClick={() => {
+                                                setCurrentSortOption(opt.value);
+                                                setIsMobileSortOpen(false);
+                                            }}
+                                            className={`w-full text-left py-3 px-3 rounded-xs text-xs font-secondary transition-all cursor-pointer flex items-center justify-between ${currentSortOption === opt.value
+                                                ? "bg-[var(--color-teal)] text-white font-semibold"
+                                                : "text-[var(--color-text-secondary)] hover:bg-[var(--color-bg-secondary)]"
+                                                }`}
+                                        >
+                                            <span>{opt.label}</span>
+                                            {currentSortOption === opt.value && <Check size={14} />}
+                                        </button>
+                                    ))}
+                                </div>
+                            </motion.div>
+                        </>
+                    )}
+                </AnimatePresence>
 
                 {/* AUTHENTICATION MODAL HUB OVERLAY LINK */}
                 <AuthModal isOpen={isAuthOpen} onClose={() => setIsAuthOpen(false)} />
