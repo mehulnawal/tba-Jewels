@@ -3,7 +3,6 @@ import { motion } from 'framer-motion';
 import { Sparkles, ArrowRight } from 'lucide-react';
 import logo from "../assets/logo/logo.png";
 
-// --- CONSTANTS & CONFIGURATION ---
 const BRAND_NAME = "TBA";
 const BRAND_SUBTEXT = "THE BRILLIANCE ATELIER";
 const HERO_TITLE = "Coming Soon";
@@ -11,14 +10,14 @@ const HERO_SUBTEXT = "Crafting a timeless jewelry experience designed for elegan
 
 // Framer Motion Animation Variants
 const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-        opacity: 1,
-        transition: {
-            staggerChildren: 0.2,
-            delayChildren: 0.15,
-        },
-    },
+    // hidden: { opacity: 0 },
+    // visible: {
+    //     opacity: 1,
+    //     transition: {
+    //         staggerChildren: 0.2,
+    //         delayChildren: 0.15,
+    //     },
+    // },
 };
 
 const fadeUpVariants = {
@@ -34,12 +33,12 @@ const fadeUpVariants = {
 };
 
 const lineRevealVariants = {
-    hidden: { width: 0, opacity: 0 },
-    visible: {
-        width: "5rem",
-        opacity: 0.25,
-        transition: { duration: 2, ease: "easeInOut", delay: 0.5 },
-    },
+    // hidden: { width: 0, opacity: 0 },
+    // visible: {
+    //     width: "5rem",
+    //     opacity: 0.25,
+    //     transition: { duration: 2, ease: "easeInOut", delay: 0.5 },
+    // },
 };
 
 export default function ComingSoonPage() {
