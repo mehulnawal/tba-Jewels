@@ -538,7 +538,7 @@ export default function HomePage() {
 
                 {/* SECTION B: FEATURED COLLECTION / BEST SELLERS */}
                 <section className="reveal-section py-20 bg-[var(--color-bg)]" id="collection-grid">
-                    <div className="max-w-7xl mx-auto px-6">
+                    <div className="container">
 
                         {/* Section Title Header */}
                         <div className="flex flex-col items-center mb-16 text-center">

@@ -3,186 +3,169 @@ import { gsap } from "gsap";
 
 export default function Loader() {
   const [show, setShow] = useState(true);
-  const loaderRef = useRef<HTMLDivElement>(null);
-  const topRef = useRef<HTMLDivElement>(null);
-  const bottomRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const monogramLettersRef = useRef<HTMLDivElement>(null);
+  const brandTitleRef = useRef<HTMLDivElement>(null);
+  const brandSubtitleRef = useRef<HTMLDivElement>(null);
+  const counterTextRef = useRef<HTMLDivElement>(null);
+  const progressLineRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // Show only once per browser session
-    const seen = sessionStorage.getItem("tba_loaded");
-    if (seen) {
+    // 1. Session Guard Check
+    const isLoaded = sessionStorage.getItem("tba_loaded");
+    if (isLoaded) {
       document.documentElement.setAttribute("data-loaded", "true");
       setShow(false);
       return;
     }
 
-    // Capture each vector path of the letters T, B, A
-    const paths = document.querySelectorAll<SVGPathElement>(".loader-letter");
-    paths.forEach(path => {
-      const length = path.getTotalLength();
-      path.style.strokeDasharray = `${length}`;
-      path.style.strokeDashoffset = `${length}`;
-    });
+    // Lock screen scrolling while animating
+    document.body.style.overflow = "hidden";
 
+    // Counter counting object
+    const counterObj = { value: 0 };
+
+    // 2. High-Fidelity Performance Master Timeline
     const tl = gsap.timeline({
       onComplete: () => {
         sessionStorage.setItem("tba_loaded", "true");
         document.documentElement.setAttribute("data-loaded", "true");
+        document.body.style.overflow = "";
         setShow(false);
       }
     });
 
-    // Phase 1: SVG contours draw themselves elegantly
-    tl.to(".loader-letter", {
-      strokeDashoffset: 0,
-      duration: 1.2,
-      ease: "power2.inOut",
-      stagger: 0.3,
-    })
-    // Phase 2: Fade fill color to warm luxury cream, then clear stroke border
-    .to(".loader-letter", {
-      fill: "var(--color-cream)",
-      stroke: "transparent",
-      duration: 0.5,
-      ease: "power1.inOut",
-    })
-    // Phase 3: Pause for visual impact
-    .to({}, { duration: 0.5 })
-    // Phase 4: Curtain Split revealing the home page
-    .to(topRef.current, {
-      y: "-100%",
-      duration: 0.8,
-      ease: "power3.inOut"
-    }, "split")
-    .to(bottomRef.current, {
-      y: "100%",
-      duration: 0.8,
-      ease: "power3.inOut"
-    }, "split");
+    // Make the system visible smoothly at boot
+    tl.set(containerRef.current, { display: "flex", opacity: 1 })
+
+      // Phase 1: High-Fashion Typographic Masked Entrance
+      .fromTo(monogramLettersRef.current,
+        { yPercent: 100, rotateX: -40, opacity: 0 },
+        { yPercent: 0, rotateX: 0, opacity: 1, duration: 0.6, ease: "power4.out" }
+      )
+      .fromTo([brandTitleRef.current, brandSubtitleRef.current],
+        { yPercent: 100, opacity: 0 },
+        { yPercent: 0, opacity: 1, duration: 0.5, stagger: 0.08, ease: "power3.out" },
+        "-=0.4"
+      )
+
+      // Phase 2: Concurrent Tracking Progress Line & Micro-Counter Ticking
+      .fromTo(progressLineRef.current,
+        { scaleX: 0 },
+        { scaleX: 1, duration: 1.1, ease: "power2.inOut", transformOrigin: "left center" },
+        "-=0.5"
+      )
+      .to(counterObj, {
+        value: 100,
+        duration: 1.1,
+        ease: "power2.inOut",
+        onUpdate: () => {
+          if (counterTextRef.current) {
+            // Keeps the number formatting clean with premium padding (00, 05, etc.)
+            counterTextRef.current.innerText = Math.floor(counterObj.value)
+              .toString()
+              .padStart(2, "0");
+          }
+        }
+      }, "-=1.1")
+
+      // Phase 3: Ultra-Premium Luxury Cinematic Exit (Scale, Blur & Lift Out)
+      .to(containerRef.current, {
+        yPercent: -100,
+        scale: 1.02,
+        filter: "blur(10px)",
+        duration: 0.65,
+        ease: "power4.inOut",
+        delay: 0.05
+      });
 
     return () => {
-      tl.kill();
+      document.body.style.overflow = "";
     };
   }, []);
 
   if (!show) return null;
 
   return (
-    <div 
-      ref={loaderRef} 
-      style={{ 
-        position: "fixed", 
-        inset: 0, 
-        zIndex: "var(--z-loader)",
-        display: "flex",
+    <div
+      ref={containerRef}
+      style={{
+        position: "fixed",
+        inset: 0,
+        zIndex: 99999,
+        backgroundColor: "var(--color-teal-dark)", // #132831[cite: 11]
+        display: "none",
         flexDirection: "column",
-        pointerEvents: "all"
+        alignItems: "center",
+        justifyContent: "center",
+        color: "var(--color-cream)", // #e4d5c3[cite: 11]
+        willChange: "transform, filter",
+        backfaceVisibility: "hidden",
       }}
+      className="perspective-1000"
     >
-      {/* Top half Curtain */}
-      <div 
-        ref={topRef} 
+      {/* ATMOSPHERIC BACKGROUND RADIAL BREATH GAIN */}
+      <div
+        className="absolute inset-0 opacity-40 pointer-events-none"
         style={{
-          position: "absolute", 
-          top: 0, 
-          left: 0, 
-          right: 0, 
-          height: "50%",
-          backgroundColor: "var(--color-teal)",
-          display: "flex", 
-          alignItems: "flex-end", 
-          justifyContent: "center",
-          overflow: "hidden", 
-          paddingBottom: "2px",
-          borderBottom: "1px solid rgba(228, 213, 195, 0.15)"
+          background: "radial-gradient(circle at center, var(--color-teal-light) 0%, transparent 70%)"
         }}
-      >
-        <svg 
-          viewBox="0 0 300 80" 
-          width="200" 
-          height="53"
-          style={{ overflow: "visible", marginBottom: "-26px" }}
-        >
-          {/* T Letter path */}
-          <path 
-            className="loader-letter"
-            d="M 10,10 H 90 M 50,10 V 70"
-            fill="none" 
-            stroke="var(--color-cream)"
-            strokeWidth="3.5" 
-            strokeLinecap="round"
-          />
-          {/* B Letter path */}
-          <path 
-            className="loader-letter"
-            d="M 110,10 V 70 M 110,10 Q 155,10 155,28 Q 155,40 110,40 Q 155,40 155,55 Q 155,70 110,70"
-            fill="none" 
-            stroke="var(--color-cream)"
-            strokeWidth="3.5" 
-            strokeLinecap="round"
-          />
-          {/* A Letter path */}
-          <path 
-            className="loader-letter"
-            d="M 200,70 L 240,10 L 280,70 M 215,48 H 265"
-            fill="none" 
-            stroke="var(--color-cream)"
-            strokeWidth="3.5" 
-            strokeLinecap="round"
-          />
-        </svg>
+      />
+
+      {/* CENTER PIECE BRAND ARCHITECTURE BLOCK */}
+      <div className="text-center select-none px-8 flex flex-col items-center relative z-10">
+
+        {/* Monogram Wrapped in a Text Clipping Mask Zone */}
+        <div className="overflow-hidden py-1 mb-2">
+          <div
+            ref={monogramLettersRef}
+            className="font-display text-[40px] md:text-[56px] tracking-[0.4em] font-light text-white pl-[0.4em]"
+          >
+            TBA
+          </div>
+        </div>
+
+        {/* Minimal Sophisticated Horizontal Line Ornament */}
+        <div className="w-10 h-[1px] bg-[var(--color-cream)]/20 my-4" />
+
+        {/* Brand Name Title Wrapped in a Text Clipping Zone */}
+        <div className="overflow-hidden py-0.5">
+          <div
+            ref={brandTitleRef}
+            className="font-primary text-sm md:text-lg tracking-[0.25em] uppercase font-normal text-[var(--color-cream)] pl-[0.25em]"
+          >
+            The Brilliance Atelier
+          </div>
+        </div>
+
+        {/* Brand Subtitle Gist Statement Wrapped in a Text Clipping Zone */}
+        <div className="overflow-hidden py-0.5 mt-1">
+          <div
+            ref={brandSubtitleRef}
+            className="font-secondary text-[8px] md:text-[9px] tracking-[0.45em] uppercase text-[var(--color-text-muted)] pl-[0.45em]"
+          >
+            Fine Handcrafted Jewelry
+          </div>
+        </div>
       </div>
 
-      {/* Bottom half Curtain */}
-      <div 
-        ref={bottomRef} 
-        style={{
-          position: "absolute", 
-          bottom: 0, 
-          left: 0, 
-          right: 0, 
-          height: "50%",
-          backgroundColor: "var(--color-teal)",
-          display: "flex", 
-          alignItems: "flex-start", 
-          justifyContent: "center",
-          overflow: "hidden", 
-          paddingTop: "2px",
-          borderTop: "1px solid rgba(228, 213, 195, 0.15)"
-        }}
-      >
-        <svg 
-          viewBox="0 0 300 80" 
-          width="200" 
-          height="53"
-          style={{ overflow: "visible", marginTop: "-26px" }}
-        >
-          {/* Mirror of SVG vector letters */}
-          <path 
-            className="loader-letter"
-            d="M 10,10 H 90 M 50,10 V 70" 
-            fill="none"
-            stroke="var(--color-cream)" 
-            strokeWidth="3.5" 
-            strokeLinecap="round"
+      {/* RE-ENGINEERED HIGH-END METRIC PROGRESS AREA */}
+      <div className="absolute bottom-20 flex flex-col items-center gap-3 w-40 md:w-48 z-10">
+
+        {/* Luxury Micro Ticking Counter Indicator */}
+        <div className="font-display text-xs tracking-widest text-[var(--color-cream)]/70 font-light flex items-center gap-1">
+          <span ref={counterTextRef}>00</span>
+          <span className="text-[9px] opacity-40">/ 100</span>
+        </div>
+
+        {/* Premium ScaleX Hairline Anchor */}
+        <div className="w-full h-[1px] bg-white/10 relative overflow-hidden">
+          <div
+            ref={progressLineRef}
+            className="w-full h-full bg-[var(--color-cream)] shadow-[0_0_8px_rgba(228,213,195,0.7)]"
+            style={{ transform: "scaleX(0)" }}
           />
-          <path 
-            className="loader-letter"
-            d="M 110,10 V 70 M 110,10 Q 155,10 155,28 Q 155,40 110,40 Q 155,40 155,55 Q 155,70 110,70"
-            fill="none" 
-            stroke="var(--color-cream)"
-            strokeWidth="3.5" 
-            strokeLinecap="round"
-          />
-          <path 
-            className="loader-letter"
-            d="M 200,70 L 240,10 L 280,70 M 215,48 H 265"
-            fill="none" 
-            stroke="var(--color-cream)" 
-            strokeWidth="3.5" 
-            strokeLinecap="round"
-          />
-        </svg>
+        </div>
       </div>
     </div>
   );
