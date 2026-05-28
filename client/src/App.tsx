@@ -13,7 +13,7 @@ import CartPage from "./pages/Cart";
 import { AuthModal, AuthModel } from "./pages/AuthModal";
 import CheckoutPage from "./pages/Checkout";
 
-const IS_COMING_SOON = false;
+const IS_COMING_SOON = true;
 
 export default function App() {
 
