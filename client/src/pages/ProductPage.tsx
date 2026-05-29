@@ -14,10 +14,8 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { useSearchParams, Link } from "react-router-dom";
 import { AuthModal } from "./AuthModal";
+import bannerImage from '../assets/banner/productPpage-banner.png';
 
-/* ==========================================================================
-   TYPE DEFINITIONS & INTERFACES
-   ========================================================================== */
 interface StoneConfig {
     type: "Diamond" | "Emerald" | "Ruby" | "Sapphire" | "Pearl" | "None";
     carat: number;
@@ -294,22 +292,18 @@ export default function ProductsPage() {
 
             <main className="w-full pb-4 bg-[var(--color-bg)] min-h-screen font-secondary text-[var(--color-text)]">
 
-                {/* EDITORIAL HERO BANNER */}
+                {/* Banner */}
                 <section className="relative w-full h-[320px] md:h-[420px] overflow-hidden flex items-center justify-center bg-[var(--color-teal-dark)]">
                     <div className="absolute inset-0 bg-black/40 z-10" />
-                    <img
-                        src="https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?auto=format&fit=crop&w=1920&q=75"
-                        alt="Luxury Canvas"
-                        className="absolute inset-0 w-full h-full object-cover"
-                    />
-                    <div className="relative z-20 text-center px-4 max-w-2xl">
-                        <span className="font-display text-[10px] md:text-xs tracking-[0.4em] uppercase text-[var(--color-cream)] font-medium mb-3 block">
-                            The Haute Couture Collection
-                        </span>
-                        <h1 className="font-primary text-3xl md:text-5xl text-[var(--color-white)] font-normal tracking-wide mb-4">
-                            Exquisite Artistry, Eternal Stories
-                        </h1>
-                    </div>
+                    <section className="relative w-full h-[320px] md:h-[420px] lg:h-[520px] overflow-hidden bg-[var(--color-teal-dark)]">
+                        ```
+                        <img
+                            src={bannerImage}
+                            alt="Luxury Jewelry Banner"
+                            className="absolute inset-0 w-full h-full object-cover object-center scale-[1.02] "
+                        />
+                        ```
+                    </section>
                 </section>
 
                 {/* PRODUCTS CONTAINER GRID SYSTEM */}

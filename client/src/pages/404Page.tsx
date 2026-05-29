@@ -86,7 +86,7 @@ export default function NotFoundPage() {
                     </a>
                 </header>
 
-                <main className="flex-grow flex flex-col justify-center items-center py-2 md:py-0 relative z-10 container px-4 sm:px-8">
+                <main className="flex-grow flex flex-col justify-center items-center py-2 md:py-3 relative z-10 container px-4 sm:px-8">
                     <div className="mx-auto flex flex-col items-center text-center">
 
                         {/* Massive Elegant Watermark Background Group */}
@@ -198,13 +198,13 @@ export default function NotFoundPage() {
                                 <HelpCircle className="w-3.5 h-3.5 stroke-[1.5]" />
                                 <span>Customer Care</span>
                             </a>
-                            <a
+                            {/* <a
                                 href="/cart"
                                 className="flex items-center gap-2 hover:text-[var(--color-teal)] transition-colors py-1 border-b border-transparent hover:border-[var(--color-teal)]/20"
                             >
                                 <ShoppingBag className="w-3.5 h-3.5 stroke-[1.5]" />
                                 <span>View Bag</span>
-                            </a>
+                            </a> */}
                         </div>
                     </div>
                 </main>

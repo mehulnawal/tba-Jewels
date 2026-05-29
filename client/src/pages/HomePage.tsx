@@ -380,7 +380,7 @@ export default function HomePage() {
 
             <main className="flex-1 w-full flex flex-col gap-0">
 
-                {/* SECTION A: HERO BANNER */}
+                {/* Banner */}
                 <section
                     onMouseEnter={() => setIsHoveringHero(true)}
                     onMouseLeave={() => setIsHoveringHero(false)}
@@ -419,7 +419,7 @@ export default function HomePage() {
                                 </div>
                             ))}
 
-                            {/* SLIDE INDICATOR LINES — bottom center */}
+                            {/* Slide indicator lines */}
                             <div
                                 style={{
                                     position: "absolute",
@@ -463,7 +463,7 @@ export default function HomePage() {
                                 ))}
                             </div>
 
-                            {/* PREV / NEXT BUTTONS — bottom right */}
+                            {/* Prev & Next buttons */}
                             <div
                                 style={{
                                     position: "absolute",
