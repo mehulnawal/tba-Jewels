@@ -13,6 +13,7 @@ import CartPage from "./pages/Cart";
 import { AuthModal, AuthModel } from "./pages/AuthModal";
 import CheckoutPage from "./pages/Checkout";
 import NotFoundPage from "./pages/404Page";
+import OrderConfirmation from "./pages/OrderConfirmation";
 
 const IS_COMING_SOON = false;
 
@@ -62,8 +63,9 @@ export default function App() {
 
           <Route path="/checkout" element={<CheckoutPage />} />
 
+          <Route path="/orderConfirmation" element={<OrderConfirmation />} />
+
           {/*
-            /checkout
             /account
             /orders
           */}

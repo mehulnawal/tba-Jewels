@@ -322,7 +322,6 @@ export default function Navbar({
                 )}
               </div>
 
-              {/* Search Dropdown */}
               <AnimatePresence>
                 {isSearchFocused && (
                   <motion.div

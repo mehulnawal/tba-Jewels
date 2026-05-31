@@ -112,7 +112,7 @@ export default function PrimeSelection() {
             <div className="container mx-auto px-4 flex flex-col items-center w-full">
 
                 {/* Headings */}
-                <div className="flex flex-col items-center mb-12 text-center">
+                <div className="flex flex-col items-center mb-2 text-center">
                     {/* <span className="section-label">Selected Statement Masterpieces</span> */}
                     <h2 className="font-primary text-3xl md:text-4xl text-[var(--color-text)] tracking-wide font-light">
                         Prime Collection

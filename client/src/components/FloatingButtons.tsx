@@ -21,14 +21,13 @@ export default function FloatingButtons() {
         id="floating-insta-btn"
       >
         <Instagram className="w-5 h-5 md:w-5.5 md:h-5.5 text-white" />
-        
+
         {/* Tooltip */}
         <span className="absolute right-[calc(100%+12px)] top-1/2 -translate-y-1/2 bg-[var(--color-teal)] text-white text-[10px] md:text-xs font-secondary tracking-wider py-1 px-3 rounded-sm opacity-0 group-hover:opacity-100 translate-x-3 group-hover:translate-x-0 pointer-events-none transition-all duration-300 shadow-md">
           Follow on Instagram
         </span>
       </motion.a>
 
-      {/* WHATSAPP CONSULTANCY PORT */}
       <motion.a
         href={SOCIAL_LINKS.whatsapp}
         target="_blank"
@@ -41,7 +40,7 @@ export default function FloatingButtons() {
         id="floating-wa-btn"
       >
         <MessageCircle className="w-5 h-5 md:w-5.5 md:h-5.5 text-white" />
-        
+
         {/* Tooltip */}
         <span className="absolute right-[calc(100%+12px)] top-1/2 -translate-y-1/2 bg-[var(--color-teal)] text-white text-[10px] md:text-xs font-secondary tracking-wider py-1 px-3 rounded-sm opacity-0 group-hover:opacity-100 translate-x-3 group-hover:translate-x-0 pointer-events-none transition-all duration-300 shadow-md">
           Chat on WhatsApp
