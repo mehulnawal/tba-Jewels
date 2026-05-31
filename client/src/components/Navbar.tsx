@@ -9,15 +9,6 @@ import logo from "../assets/logo/logo.png";
 import { useGoldPrice } from "../hooks/useGoldPrice";
 import { useNavigate, useLocation } from "react-router-dom";
 
-const MOCK_GOLD_RATES = {
-  "9K": 4847,
-  "12K": 7253,
-  "18K": 9611,
-  "22K": 11746,
-  "24K": 12815,
-  updatedAt: new Date().toISOString(),
-};
-
 const CATEGORIES = [
   "All", "Rings", "Necklaces", "Earrings",
   "Bangles", "Pendants"
@@ -181,7 +172,7 @@ export default function Navbar({
               animate={{ height: "var(--announcement-height)", opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
               transition={{ duration: 0.25 }}
-              className="w-full bg-[var(--color-teal)] text-[var(--color-cream)] overflow-hidden relative flex items-center"
+              className="w-full bg-[var(--color-teal)] text-[var(--color-cream-light)] overflow-hidden relative flex items-center"
             >
               <div className="w-full overflow-hidden flex items-center px-10">
                 <div className="ticker-track flex whitespace-nowrap gap-12 font-secondary text-[11px] tracking-[0.25em] uppercase">
@@ -203,7 +194,7 @@ export default function Navbar({
 
         {/* ROW 2: GOLD PRICE BAR */}
         <div
-          className="w-full bg-[var(--color-cream-light)] border-b border-[var(--color-border-subtle)] text-[var(--color-teal)]"
+          className="w-full bg-[var(--color-cream-light)] border-b border-[var(--color-border-subtle)] text-[var(--color-teal)] py-2"
           style={{ height: "var(--gold-bar-height)", minHeight: "var(--gold-bar-height)" }}
         >
           <div className="container h-full flex items-center justify-between font-secondary text-xs overflow-x-auto no-scrollbar gap-4">
@@ -453,11 +444,9 @@ export default function Navbar({
       </div>
 
       {/* ── MOBILE MENU OVERLAY ───────────────────────────────────────────── */}
-      {/* FIX: Rendered outside sticky wrapper so it's truly fullscreen fixed */}
       <AnimatePresence>
         {isMobileMenuOpen && (
           <>
-            {/* Backdrop */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -468,14 +457,11 @@ export default function Navbar({
               aria-hidden="true"
             />
 
-            {/* Drawer */}
             <motion.div
               initial={{ x: "100%" }}
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
               transition={{ type: "spring", damping: 28, stiffness: 220 }}
-              // FIX: overflow-y-auto + overscroll-contain so drawer itself
-              //      can scroll if needed but doesn't propagate to body
               className="fixed top-0 right-0 bottom-0 w-[80%] max-w-[340px] bg-[var(--color-teal)] z-[var(--z-overlay)] overflow-y-auto overscroll-contain"
               role="dialog"
               aria-modal="true"
@@ -483,7 +469,6 @@ export default function Navbar({
             >
               <div className="flex flex-col min-h-full p-6 sm:p-8">
 
-                {/* Header */}
                 <div className="flex justify-between items-center mb-10">
                   <span className="font-primary text-xl text-[var(--color-cream)] font-semibold tracking-wider">
                     Menu
@@ -497,7 +482,6 @@ export default function Navbar({
                   </button>
                 </div>
 
-                {/* Category Links */}
                 <nav className="flex flex-col flex-1">
                   {CATEGORIES.map((category, index) => (
                     <motion.button
@@ -516,8 +500,7 @@ export default function Navbar({
                   ))}
                 </nav>
 
-                {/* Bottom actions */}
-                <div className="flex gap-5 mt-8 pt-6 border-t border-white/20">
+                {/* <div className="flex gap-5 mt-8 pt-6 border-t border-white/20">
                   <button
                     onClick={onAuthOpen} // <-- Opens AuthModal
                     className="flex items-center gap-1.5 text-[var(--color-cream)] hover:text-white transition-colors text-xs font-secondary cursor-pointer bg-transparent border-none"
@@ -526,20 +509,20 @@ export default function Navbar({
                     <span>Wishlist</span>
                   </button>
                   <button
-                    onClick={onAuthOpen} // <-- Opens AuthModal
+                    onClick={onAuthOpen}
                     className="flex items-center gap-1.5 text-[var(--color-cream)] hover:text-white transition-colors text-xs font-secondary cursor-pointer bg-transparent border-none"
                   >
                     <ShoppingBag size={16} />
                     <span>Cart</span>
                   </button>
                   <button
-                    onClick={onAuthOpen} // <-- Opens AuthModal
+                    onClick={onAuthOpen}
                     className="flex items-center gap-1.5 text-[var(--color-cream)] hover:text-white transition-colors text-xs font-secondary cursor-pointer bg-transparent border-none"
                   >
                     <User size={16} />
                     <span>Account</span>
                   </button>
-                </div>
+                </div> */}
               </div>
             </motion.div>
           </>

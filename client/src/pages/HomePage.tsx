@@ -39,6 +39,7 @@ import {
     ArrowRight
 } from "lucide-react";
 import { AuthModal } from "./AuthModal";
+import PrimeSelection from "../components/PrimeCollection";
 
 
 gsap.registerPlugin(ScrollTrigger);
@@ -176,36 +177,36 @@ export default function HomePage() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
 
 
-    useEffect(() => {
-        const ctx = gsap.context(() => {
+    // useEffect(() => {
+    //     const ctx = gsap.context(() => {
 
-            gsap.utils.toArray<HTMLElement>(".reveal-section").forEach((section) => {
-                gsap.fromTo(section,
-                    { y: 50, opacity: 0 },
-                    {
-                        y: 0,
-                        opacity: 1,
-                        duration: 1,
-                        ease: "power2.out",
-                        scrollTrigger: {
-                            trigger: section,
-                            start: "top 85%",
-                            toggleActions: "play none none none"
-                        }
-                    }
-                );
-            });
+    //         gsap.utils.toArray<HTMLElement>(".reveal-section").forEach((section) => {
+    //             gsap.fromTo(section,
+    //                 { y: 50, opacity: 0 },
+    //                 {
+    //                     y: 0,
+    //                     opacity: 1,
+    //                     duration: 1,
+    //                     ease: "power2.out",
+    //                     scrollTrigger: {
+    //                         trigger: section,
+    //                         start: "top 85%",
+    //                         toggleActions: "play none none none"
+    //                     }
+    //                 }
+    //             );
+    //         });
 
-            // Ken burns animation loop for the active slide in Hero
-            gsap.fromTo(`.hero-slide-${activeSlide} img`,
-                { scale: 1.08 },
-                { scale: 1, duration: 2.5, ease: "power2.out" }
-            );
-        });
-        return () => ctx.revert();
-    }, [activeSlide]);
+    //         gsap.fromTo(`.hero-slide-${activeSlide} img`,
+    //             { scale: 1.08 },
+    //             { scale: 1, duration: 2.5, ease: "power2.out" }
+    //         );
+    //     });
+    //     return () => ctx.revert();
+    // }, [activeSlide]);
 
     // Autoplay Hero banner timers
+
     useEffect(() => {
         if (isHoveringHero) return;
         const interval = setInterval(() => {
@@ -463,12 +464,12 @@ export default function HomePage() {
                                 ))}
                             </div>
 
-                            {/* Prev & Next buttons */}
+                            {/* buttons */}
                             <div
                                 style={{
                                     position: "absolute",
                                     bottom: 16,
-                                    right: 20,
+                                    left: 20,
                                     display: "flex",
                                     gap: 10,
                                     zIndex: 10,
@@ -536,8 +537,11 @@ export default function HomePage() {
                     </div>
                 </section>
 
-                {/* SECTION B: FEATURED COLLECTION / BEST SELLERS */}
-                <section className="reveal-section py-20 bg-[var(--color-bg)]" id="collection-grid">
+                {/* Prime collection */}
+                <PrimeSelection />
+
+                {/* best seller */}
+                <section className="reveal-section py-3 bg-[var(--color-bg)]" id="collection-grid">
                     <div className="container">
 
                         {/* Section Title Header */}
@@ -549,7 +553,6 @@ export default function HomePage() {
                             <div className="w-12 h-[1px] bg-[var(--color-cream)] mt-4" />
                         </div>
 
-                        {/* Dynamic Interactive Products Grid */}
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-12">
                             {filteredProducts.map((product) => {
                                 const isInWishlist = isProductInWishlist(product.id);
@@ -663,122 +666,8 @@ export default function HomePage() {
                     </div>
                 </section>
 
-                <section className="section-padding bg-[var(--color-bg)]" id="prime-selection-section">
-                    <div className="container flex flex-col items-center">
 
-                        {/* Split Title block */}
-                        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-[var(--color-border-subtle)] pb-8 reveal-section">
-                            <div>
-                                <div className="flex flex-wrap items-center gap-x-4">
-                                    <h2 className="font-primary text-4xl md:text-5xl text-[var(--color-teal)] leading-none">
-                                        Prime
-                                    </h2>
-                                    <h2 className="font-secondary font-light text-4xl md:text-5xl text-[var(--color-text-muted)] leading-none">
-                                        Collection
-                                    </h2>
-                                </div>
-                                <p className="font-secondary text-xs uppercase tracking-[0.2em] text-[var(--color-text-muted)] mt-3">
-                                    Discover Our Exclusive Master Crafted Jewelry Looks
-                                </p>
-                            </div>
-
-                            {/* Slide controls */}
-                            <div className="flex items-center gap-3 self-start md:self-end">
-                                {PRIME_LOOKS.map((_, i) => (
-                                    <button
-                                        key={i}
-                                        onClick={() => handleLookChange(i)}
-                                        className="py-2 cursor-pointer bg-transparent border-none flex items-center"
-                                        aria-label={`Lookbook Look ${i + 1}`}
-                                    >
-                                        <span
-                                            className="h-[3px] rounded-full transition-all duration-300 block"
-                                            style={{
-                                                width: i === currentLookIndex ? "30px" : "10px",
-                                                backgroundColor: i === currentLookIndex ? "var(--color-teal)" : "rgba(28, 59, 72, 0.2)",
-                                            }}
-                                        />
-                                    </button>
-                                ))}
-                            </div>
-                        </div>
-
-                        {/* Look display container using aspect ratio responsive wrappers */}
-                        <div className="relative w-full aspect-[4/3] md:aspect-[16/9] rounded-xl overflow-hidden bg-zinc-200 shadow-md reveal-section">
-
-                            <AnimatePresence mode="wait">
-                                <motion.div
-                                    key={currentLookIndex}
-                                    initial={{ opacity: 0 }}
-                                    animate={{ opacity: 1 }}
-                                    exit={{ opacity: 0 }}
-                                    transition={{ duration: 0.6 }}
-                                    className="w-full h-full relative"
-                                >
-                                    <img
-                                        src={PRIME_LOOKS[currentLookIndex].image}
-                                        alt={`TBA Premium Prime Collection look ${currentLookIndex + 1}`}
-                                        className="w-full h-full object-cover object-center"
-                                        referrerPolicy="no-referrer"
-                                    />
-
-                                    {/* Absolute positioning pins */}
-                                    {PRIME_LOOKS[currentLookIndex].hotspots.map((hotspot) => (
-                                        <div
-                                            key={hotspot.id}
-                                            className="absolute group z-10 cursor-pointer"
-                                            style={{
-                                                left: `${hotspot.x}%`,
-                                                top: `${hotspot.y}%`,
-                                                transform: "translate(-50%, -50%)"
-                                            }}
-                                            onClick={() => openHotspotModal(hotspot)}
-                                        >
-                                            <div className="relative flex items-center justify-center">
-                                                {/* Shimmering pulse rings */}
-                                                <div className="hotspot-ring" />
-                                                <button
-                                                    className="w-10 h-10 rounded-full bg-[var(--color-teal)] hover:bg-[var(--color-cream)] text-[var(--color-cream)] hover:text-[var(--color-teal)] font-secondary font-light text-xl border-2 border-white flex items-center justify-center cursor-pointer shadow-lg transition-colors z-2 duration-300"
-                                                >
-                                                    +
-                                                </button>
-
-                                                {/* Interactive prompt tooltips */}
-                                                <div className="absolute left-1/2 -translate-x-1/2 bottom-12 bg-[var(--color-teal)] text-white text-[10px] tracking-wider uppercase font-secondary px-3 py-1.5 rounded-sm whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none shadow-md">
-                                                    Discover piece
-                                                </div>
-                                            </div>
-                                        </div>
-                                    ))}
-                                </motion.div>
-                            </AnimatePresence>
-
-                            {/* Prev/next slide layers overlay */}
-                            <div className="absolute bottom-6 right-6 flex gap-3.5 z-10">
-                                <button
-                                    onClick={() => setCurrentLookIndex((prev) => (prev - 1 + PRIME_LOOKS.length) % PRIME_LOOKS.length)}
-                                    className="w-10 h-10 rounded-full bg-white/80 text-[var(--color-teal)] hover:bg-[var(--color-teal)] hover:text-white flex items-center justify-center cursor-pointer transition-all shadow-sm"
-                                    aria-label="Previous Look"
-                                    id="lookbook-btn-prev"
-                                >
-                                    <ChevronLeft size={16} />
-                                </button>
-                                <button
-                                    onClick={() => setCurrentLookIndex((prev) => (prev + 1) % PRIME_LOOKS.length)}
-                                    className="w-10 h-10 rounded-full bg-white/80 text-[var(--color-teal)] hover:bg-[var(--color-teal)] hover:text-white flex items-center justify-center cursor-pointer transition-all shadow-sm"
-                                    aria-label="Next Look"
-                                    id="lookbook-btn-next"
-                                >
-                                    <ChevronRight size={16} />
-                                </button>
-                            </div>
-
-                        </div>
-
-                    </div>
-                </section>
-
-                {/* SECTION D: WHY CHOOSE US + BRAND PROMISE STAT STRIP */}
+                {/* Why Choose Us */}
                 <section className="bg-[var(--color-bg-secondary)]" id="brand-promise-section">
 
                     {/* Part 1: Why Choose Us */}
@@ -872,11 +761,10 @@ export default function HomePage() {
 
                 </section>
 
-                {/* SECTION E: TESTIMONIALS CENTER */}
+                {/* Testimonials  */}
                 <section className="section-padding bg-[var(--color-bg)] overflow-hidden" id="testimonials-section">
                     <div className="container flex flex-col items-center gap-12">
 
-                        {/* Header headings */}
                         <div className="text-center reveal-section">
                             <span className="section-label">Testimonials</span>
                             <h2 className="text-4xl md:text-5xl font-primary text-[var(--color-teal)] font-normal tracking-wide">
@@ -887,7 +775,6 @@ export default function HomePage() {
                             </p>
                         </div>
 
-                        {/* Testimonials stacked carousel deck */}
                         <div className="w-full max-w-2xl relative flex flex-col items-center reveal-section min-h-[300px]">
 
                             <AnimatePresence mode="wait">
@@ -899,19 +786,16 @@ export default function HomePage() {
                                     transition={{ duration: 0.4 }}
                                     className="w-full bg-[var(--color-white)] rounded-2xl border border-[var(--color-border-subtle)] p-8 md:p-10 shadow-lg relative flex flex-col gap-6"
                                 >
-                                    {/* Stars ranking */}
                                     <div className="flex gap-1.5">
                                         {Array.from({ length: TESTIMONIALS[testimonialIndex].rating }).map((_, i) => (
                                             <Star key={i} size={16} className="text-amber-500 fill-amber-500" />
                                         ))}
                                     </div>
 
-                                    {/* Review Text */}
                                     <blockquote className="font-primary text-lg md:text-xl text-[var(--color-teal)] italic leading-relaxed font-normal">
                                         "{TESTIMONIALS[testimonialIndex].review}"
                                     </blockquote>
 
-                                    {/* Bio details panel */}
                                     <div className="flex items-center gap-3 border-t border-[var(--color-border-subtle)] pt-5">
                                         <img
                                             src={TESTIMONIALS[testimonialIndex].avatar}
@@ -937,7 +821,6 @@ export default function HomePage() {
 
                         </div>
 
-                        {/* Testimonials controls bar */}
                         <div className="flex items-center gap-5 reveal-section">
                             <button
                                 onClick={() => setTestimonialIndex((prev) => (prev - 1 + TESTIMONIALS.length) % TESTIMONIALS.length)}
@@ -969,12 +852,11 @@ export default function HomePage() {
                                 <ChevronRight size={16} />
                             </button>
                         </div>
-
                     </div>
-                </section>
+                </section >
 
-                {/* SECTION F: CUSTOMER ACCORDION FAQS */}
-                <section className="section-padding bg-[var(--color-bg-secondary)] border-t border-[var(--color-border-subtle)]" id="faq-section">
+                {/* FAQS */}
+                <section className="section-padding bg-[var(--color-bg-secondary)] border-t border-[var(--color-border-subtle)]" id="faq-section" >
                     <div className="container max-w-4xl flex flex-col gap-10">
 
                         {/* Titles headings */}
@@ -1031,8 +913,9 @@ export default function HomePage() {
                         </div>
 
                     </div>
-                </section>
+                </section >
 
+                {/* Footer */}
                 <Footer onCategoryChange={setActiveCategory} />
 
                 {/* SECTION G: SEO STRUCTURAL DIRECTORY DIRECT LINK GROUPS */}
@@ -1099,16 +982,16 @@ export default function HomePage() {
                     </div>
                 </section> */}
 
-            </main>
+            </main >
 
 
+            {/* Floating buttons */}
             <FloatingButtons />
 
-            {/* DYNAMIC SHOPPING SIDE CART DRAWER (SLIDE-IN EFFECT) */}
+            {/* Add to cart drawer */}
             <AnimatePresence>
                 {isCartOpen && (
                     <>
-                        {/* Backdrop */}
                         <motion.div
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
@@ -1261,7 +1144,7 @@ export default function HomePage() {
                 )}
             </AnimatePresence>
 
-            {/* DYNAMIC WISHLIST SIDE DRAWER PANEL (SLIDE-IN EFFECT) */}
+            {/* Wishlist drawer */}
             <AnimatePresence>
                 {isWishlistOpen && (
                     <>
@@ -1376,10 +1259,9 @@ export default function HomePage() {
             </AnimatePresence>
 
             {/* DYNAMIC PRIME LOOK INTERACTIVE DIALOG MODAL (JOCKEY-STYLE DETAILS POPUP) */}
-            <AnimatePresence>
+            {/* <AnimatePresence>
                 {isPrimeModalOpen && selectedHotspot && (
                     <>
-                        {/* Backdrop */}
                         <motion.div
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
@@ -1388,7 +1270,6 @@ export default function HomePage() {
                             className="fixed inset-0 bg-black/60 z-[var(--z-modal)] cursor-pointer"
                         />
 
-                        {/* Modal Dialog Body */}
                         <motion.div
                             initial={{ scale: 0.94, opacity: 0, x: "-50%", y: "-40%" }}
                             animate={{ scale: 1, opacity: 1, x: "-50%", y: "-50%" }}
@@ -1397,7 +1278,6 @@ export default function HomePage() {
                             className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[var(--z-modal)] bg-white rounded-xl shadow-2xl p-6 md:p-8 w-[92%] max-w-[480px]"
                             id="prime-lookbook-modal"
                         >
-                            {/* Header */}
                             <div className="flex justify-between items-center mb-6 border-b border-[var(--color-border-subtle)] pb-4">
                                 <div className="flex items-center gap-2">
                                     <Sparkles size={16} className="text-[var(--color-cream)]" />
@@ -1413,9 +1293,7 @@ export default function HomePage() {
                                 </button>
                             </div>
 
-                            {/* Profile Card details */}
                             <div className="flex gap-5">
-                                {/* Product bounds image preview */}
                                 <div className="w-24 h-30 bg-neutral-100 rounded-lg overflow-hidden shrink-0 border border-[var(--color-border-subtle)]">
                                     <img
                                         src={selectedHotspot.product.image}
@@ -1424,7 +1302,6 @@ export default function HomePage() {
                                     />
                                 </div>
 
-                                {/* Details weights text directions */}
                                 <div className="flex flex-col justify-between py-1">
                                     <div>
                                         <h4 className="font-primary text-xl font-bold text-[var(--color-teal)] leading-snug">
@@ -1449,7 +1326,6 @@ export default function HomePage() {
                                 </div>
                             </div>
 
-                            {/* Footer Shopping Action Operations */}
                             <div className="mt-8 flex gap-3">
                                 <button
                                     onClick={() => {
@@ -1494,13 +1370,12 @@ export default function HomePage() {
                         </motion.div>
                     </>
                 )}
-            </AnimatePresence>
+            </AnimatePresence> */}
 
             {/* DYNAMIC CHECKOUT SUCCESS POPUP MODAL */}
             <AnimatePresence>
                 {showCheckoutSuccess && (
                     <>
-                        {/* Backdrop */}
                         <motion.div
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
@@ -1567,8 +1442,6 @@ export default function HomePage() {
                 )}
             </AnimatePresence>
 
-
-
-        </div>
+        </div >
     );
 }

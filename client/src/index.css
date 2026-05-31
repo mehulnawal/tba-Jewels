@@ -1,26 +1,72 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Space+Grotesk:wght@400;500;600&display=swap");
+/* ============================================
+   TBA JEWELLERY — GLOBAL STYLES
+   Fonts: Clash Display, Montserrat
+   Colors: Brand palette only
+   ============================================ */
+
+/* ── Local Fonts ── */
+@font-face {
+  font-family: "Clash Display";
+  src:
+    url("/fonts/ClashDisplay_Complete/Fonts/WEB/fonts/ClashDisplay-Variable.woff2")
+      format("woff2"),
+    url("/fonts/ClashDisplay_Complete/Fonts/WEB/fonts/ClashDisplay-Variable.woff")
+      format("woff");
+  font-weight: 200 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Montserrat";
+  src: url("/fonts/Montserrat/Montserrat-VariableFont_wght.woff2")
+    format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Montserrat";
+  src: url("/fonts/Montserrat/Montserrat-Italic-VariableFont_wght.woff2")
+    format("woff2");
+  font-weight: 100 900;
+  font-style: italic;
+  font-display: swap;
+}
 
 @import "tailwindcss";
 
 @theme {
-  --color-bg: #faf9f7;
-  --color-bg-secondary: #f7fafb;
-  --color-cream: #e4d5c3;
-  --color-cream-light: #f0e8de;
-  --color-teal: #1c3b48;
-  --color-teal-light: #2a5568;
-  --color-teal-dark: #132831;
-  --color-text: #1c3b48;
-  --color-text-secondary: #1a1a1a;
-  --color-text-muted: #6b7a80;
+  /* ── Brand Colors ── */
+  --color-bg: #faf9f7; 
+  --color-bg-secondary: #f5efeb; /* Parchment — alternate sections, cards */
+  --color-cream: #dbd5b5; /* Sand Dune — borders, dividers, decorative */
+  --color-cream-light: #f0ede6; /* Lighter parchment — hover states, subtle fills */
+
+  --color-teal: #1c3b48; /* Charcoal Blue — primary headings, nav, CTAs */
+  --color-teal-light: #567c8d; /* Air Force Blue — secondary accents, links */
+  --color-teal-dark: #132831; /* Deeper blue — hover on primary */
+
+  --color-charcoal: #1c1c1c; /* Dark Charcoal — body text, labels */
+  --color-text: #1c1c1c; /* Dark Charcoal — default text */
+  --color-text-secondary: #1c3b48; /* Charcoal Blue — headings, emphasis */
+  --color-text-muted: #6b7a80; /* Muted blue-grey — captions, placeholders */
   --color-white: #ffffff;
-  --color-border: #e4d5c3;
+
+  --color-border: #dbd5b5; /* Sand Dune — default borders */
   --color-border-subtle: rgba(28, 59, 72, 0.1);
+  --color-border-tertiary: rgba(28, 59, 72, 0.06);
 
-  --font-primary: "Playfair Display", "ExemplarPro", "Georgia", serif;
-  --font-secondary: "Inter", "Gotham", "Helvetica Neue", sans-serif;
-  --font-display: "Space Grotesk", sans-serif;
+  /* ── Status Colors ── */
+  --color-success: #27ae60;
+  --color-error: #c0392b;
 
+  /* ── Fonts ── */
+  --font-primary: "Clash Display", "Georgia", serif;
+  --font-secondary: "Montserrat", "Helvetica Neue", sans-serif;
+
+  /* ── Type Scale ── */
   --text-xs: 0.75rem;
   --text-sm: 0.875rem;
   --text-base: 1rem;
@@ -33,6 +79,7 @@
   --text-6xl: clamp(3rem, 7vw, 5.5rem);
   --text-hero: clamp(3.5rem, 10vw, 9rem);
 
+  /* ── Spacing ── */
   --space-1: 0.25rem;
   --space-2: 0.5rem;
   --space-3: 0.75rem;
@@ -47,22 +94,26 @@
   --space-24: 6rem;
   --space-32: 8rem;
 
+  /* ── Border Radius ── */
   --radius-sm: 2px;
   --radius-md: 8px;
   --radius-lg: 16px;
   --radius-xl: 24px;
   --radius-full: 9999px;
 
+  /* ── Shadows ── */
   --shadow-sm: 0 1px 3px rgba(28, 59, 72, 0.06);
   --shadow-md: 0 4px 16px rgba(28, 59, 72, 0.1);
   --shadow-lg: 0 8px 32px rgba(28, 59, 72, 0.14);
-  --shadow-cream: 0 4px 24px rgba(228, 213, 195, 0.4);
+  --shadow-cream: 0 4px 24px rgba(219, 213, 181, 0.4);
 
+  /* ── Transitions ── */
   --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
   --transition-base: 300ms cubic-bezier(0.4, 0, 0.2, 1);
   --transition-slow: 500ms cubic-bezier(0.76, 0, 0.24, 1);
   --transition-spring: 600ms cubic-bezier(0.34, 1.56, 0.64, 1);
 
+  /* ── Z-Index ── */
   --z-base: 1;
   --z-dropdown: 100;
   --z-sticky: 200;
@@ -71,19 +122,22 @@
   --z-loader: 900;
   --z-float: 999;
 
+  /* ── Layout ── */
   --navbar-height: 72px;
   --announcement-height: 44px;
   --gold-bar-height: 48px;
   --category-bar-height: 48px;
 }
 
+/* ============================================
+   BASE RESET
+   ============================================ */
 *,
 *::before,
 *::after {
   box-sizing: border-box;
 }
 
-/* FIXED */
 html {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -98,7 +152,6 @@ body {
   line-height: 1.6;
 }
 
-/* When modal is open, body scroll must be locked */
 body.modal-open {
   overflow: hidden;
   height: 100vh;
@@ -125,7 +178,9 @@ a {
   text-decoration: none;
 }
 
-/* Custom scrollbar */
+/* ============================================
+   SCROLLBAR
+   ============================================ */
 ::-webkit-scrollbar {
   width: 8px;
   height: 6px;
@@ -141,10 +196,28 @@ a {
   background: var(--color-teal-light);
 }
 
+.styled-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+.styled-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.styled-scrollbar::-webkit-scrollbar-thumb {
+  background-color: var(--color-teal);
+  border-radius: 999px;
+  opacity: 0.6;
+}
+.styled-scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: var(--color-teal-light);
+}
+.styled-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-teal) transparent;
+}
+
 /* ============================================
-   KEYFRAMES OUTSIDE LAYERS
+   KEYFRAMES
    ============================================ */
-/* Gold rates shimmer skeleton */
 @keyframes shimmer {
   0% {
     background-position: -200% 0;
@@ -154,7 +227,6 @@ a {
   }
 }
 
-/* Green pulse dot */
 @keyframes pulse-dot {
   0%,
   100% {
@@ -167,7 +239,6 @@ a {
   }
 }
 
-/* Hotspot pulse ring */
 @keyframes hotspot-pulse {
   0% {
     transform: scale(1);
@@ -179,6 +250,9 @@ a {
   }
 }
 
+/* ============================================
+   LAYOUT UTILITIES
+   ============================================ */
 .container,
 html body .container,
 section .container,
@@ -220,16 +294,19 @@ main .section-padding {
   }
 }
 
+/* ============================================
+   FONT UTILITY CLASSES
+   ============================================ */
 .font-primary {
   font-family: var(--font-primary);
 }
 .font-secondary {
   font-family: var(--font-secondary);
 }
-.font-display {
-  font-family: var(--font-display);
-}
 
+/* ============================================
+   REUSABLE COMPONENT CLASSES
+   ============================================ */
 .section-label {
   font-family: var(--font-secondary);
   font-size: var(--text-xs);
@@ -240,6 +317,13 @@ main .section-padding {
   margin-bottom: var(--space-3);
 }
 
+.teal-divider {
+  width: 40px;
+  height: 2px;
+  background: var(--color-teal);
+  display: block;
+}
+
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
@@ -248,6 +332,9 @@ main .section-padding {
   scrollbar-width: none;
 }
 
+/* ============================================
+   SKELETON / LOADING
+   ============================================ */
 .skeleton {
   background: linear-gradient(
     90deg,
@@ -260,10 +347,13 @@ main .section-padding {
   border-radius: var(--radius-sm);
 }
 
+/* ============================================
+   PULSE / HOTSPOT
+   ============================================ */
 .pulse-dot {
   width: 8px;
   height: 8px;
-  background: #22c55e;
+  background: var(--color-success);
   border-radius: var(--radius-full);
   animation: pulse-dot 2s ease infinite;
 }
@@ -274,29 +364,4 @@ main .section-padding {
   border: 1px solid var(--color-white);
   border-radius: var(--radius-full);
   animation: hotspot-pulse 2s ease-out infinite;
-}
-
-/* Themed scrollbar */
-.styled-scrollbar::-webkit-scrollbar {
-  width: 4px;
-}
-
-.styled-scrollbar::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.styled-scrollbar::-webkit-scrollbar-thumb {
-  background-color: var(--color-teal);
-  border-radius: 999px;
-  opacity: 0.6;
-}
-
-.styled-scrollbar::-webkit-scrollbar-thumb:hover {
-  background-color: var(--color-teal-light);
-}
-
-/* Firefox */
-.styled-scrollbar {
-  scrollbar-width: thin;
-  scrollbar-color: var(--color-teal) transparent;
 }
