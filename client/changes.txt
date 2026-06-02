@@ -1,0 +1,31 @@
+1. Carousel in product display - automatic in every product 
+2. Filter remove option of karat filtration complete 
+3. Initially 25 product will be visible - each categories 5 products - without login
+   and if person login then only he can see all the products 
+4. IP address access of customer 
+5. if order is more than 10 products then the admin should be able to download the excel sheet of that order
+6. remove logo from banner images 
+7. no lagging on the website 
+8. each image should be load fast 
+9. Jewel box = copy - product details page & filter & sort options 
+10. Home Page - Video create - banner 
+11. Highlight in the website in the text 
+12. share option on product details page
+13. the certificate and hallmark will not come on product details page 
+14. animate the prime collection option  - Home Page - The animation would be - as someone clicks on the plus button one line will go from ring to the box in animated and the box will open in the right side
+15. Color order Yellow, White, Rose
+16. one each product all th karat option should be visible 
+17. Whatsapp original logo 
+18. FAQ copy from jewell box 
+19. Life time exchange remove from entire website 
+20. why choose TBA section - add a point of Highly customization as per customer and remove lifetime exchange point
+21. announcement section - copy from JewellBox 
+22. increase the font size in live rate 
+23. https://www.semrush.com/analytics/keywordoverview/?q=jewelbox&db=in - check this out and find similar websites which rank at top
+
+All the product information to be stored in each product 
+Home Page - data 
+Categories list 
+5 Products of each category
+
+4 post 4 reel
