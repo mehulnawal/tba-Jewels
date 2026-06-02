@@ -21,9 +21,7 @@ import {
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 
-/* ==========================================================================
-   PRODUCT DATA STRUCTURE (CLEAN, NATURAL ENGLISH)
-   ========================================================================== */
+//    PRODUCT DATA STRUCTURE 
 const PRODUCT_DATA = {
     name: "The Aurelia Eternal Cascade Diamond Necklace",
     slug: "aurelia-eternal-cascade-diamond-necklace",

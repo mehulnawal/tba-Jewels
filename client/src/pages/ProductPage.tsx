@@ -14,7 +14,7 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { useSearchParams, Link } from "react-router-dom";
 import { AuthModal } from "./AuthModal";
-import bannerImage from '../assets/banner/productPpage-banner.WebP';
+import bannerImage from '../assets/banner/productPpage-banner.webp';
 
 interface StoneConfig {
     type: "Diamond" | "Emerald" | "Ruby" | "Sapphire" | "Pearl" | "None";

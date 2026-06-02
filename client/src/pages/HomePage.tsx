@@ -11,9 +11,9 @@ import Navbar from "../components/Navbar";
 import { Link } from "react-router-dom";
 import useEmblaCarousel from 'embla-carousel-react';
 
-import banner1 from '../assets/banner/banner1.WebP'
-import banner2 from '../assets/banner/banner2.WebP'
-import banner3 from '../assets/banner/banner3.WebP'
+import banner1 from '../assets/banner/banner1.webp'
+import banner2 from '../assets/banner/banner2.webp'
+import banner3 from '../assets/banner/banner3.webp'
 
 // import { useLenis } from "../providers/LenisProvider";
 
