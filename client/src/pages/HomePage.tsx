@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -9,6 +9,7 @@ import FloatingButtons from "../components/FloatingButtons";
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 import { Link } from "react-router-dom";
+import useEmblaCarousel from 'embla-carousel-react';
 
 import banner1 from '../assets/banner/banner1.WebP'
 import banner2 from '../assets/banner/banner2.WebP'
@@ -40,6 +41,7 @@ import {
 } from "lucide-react";
 import { AuthModal } from "./AuthModal";
 import PrimeSelection from "../components/PrimeCollection";
+import BestSellerCarousel from "../components/BestSellerCarousel";
 
 
 gsap.registerPlugin(ScrollTrigger);
@@ -540,7 +542,7 @@ export default function HomePage() {
                 {/* Prime collection */}
                 <PrimeSelection />
 
-                {/* best seller */}
+                {/* Best Seller */}
                 <section className="reveal-section py-3 bg-[var(--color-bg)]" id="collection-grid">
                     <div className="container">
 
@@ -553,116 +555,17 @@ export default function HomePage() {
                             <div className="w-12 h-[1px] bg-[var(--color-cream)] mt-4" />
                         </div>
 
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-12">
-                            {filteredProducts.map((product) => {
-                                const isInWishlist = isProductInWishlist(product.id);
-                                const standardPrice = getProductPrice(product);
+                        {/* Embla Carousel Wrapper */}
+                        <BestSellerCarousel
+                            filteredProducts={filteredProducts}
+                            isProductInWishlist={isProductInWishlist}
+                            getProductPrice={getProductPrice}
+                            isLoggedIn={isLoggedIn}
+                            setIsAuthOpen={setIsAuthOpen}
+                            toggleWishlist={toggleWishlist}
+                            addToCart={addToCart}
+                        />
 
-                                return (
-                                    <motion.div
-                                        key={product.id}
-                                        layout
-                                        initial={{ opacity: 0, y: 20 }}
-                                        animate={{ opacity: 1, y: 0 }}
-                                        exit={{ opacity: 0, y: 20 }}
-                                        transition={{ duration: 0.5 }}
-                                        className="group relative flex flex-col justify-between bg-white/40 backdrop-blur-sm rounded-xl p-4 border border-[var(--color-border-subtle)] hover:border-[var(--color-cream)] hover:shadow-xl hover:shadow-[var(--color-cream)]/10 transition-all duration-500 ease-out"
-                                    >
-                                        {/* 1. Wrap Image and Title Meta details inside a Link to route to details view */}
-                                        <Link
-                                            to={`/product/${product.slug}`}
-                                            className="no-underline text-inherit flex flex-col flex-1"
-                                        >
-                                            {/* Image Preview Window Frame Container */}
-                                            <div className="relative aspect-square w-full rounded-lg overflow-hidden bg-[var(--color-bg-secondary)] mb-5">
-                                                <img
-                                                    src={product.image}
-                                                    alt={product.name}
-                                                    className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out"
-                                                    loading="lazy"
-                                                />
-
-                                                {/* Badge Indicators Layer */}
-                                                <div className="absolute top-3 left-3 flex flex-col gap-1.5 z-10">
-                                                    {product.tags?.map((tag) => (
-                                                        <span
-                                                            key={tag}
-                                                            className={`font-secondary text-[9px] tracking-widest font-semibold uppercase px-2 py-1 rounded-sm text-white ${tag === "BESTSELLER" ? "bg-[var(--color-teal)]" : "bg-amber-700"}`}
-                                                        >
-                                                            {tag}
-                                                        </span>
-                                                    ))}
-                                                </div>
-                                            </div>
-
-                                            {/* Text Metadata Specifications Block */}
-                                            <div className="flex flex-col flex-1 px-1">
-                                                <div className="flex justify-between items-start gap-2 mb-1">
-                                                    <h3 className="font-primary text-base text-[var(--color-text)] tracking-wide font-light line-clamp-1 group-hover:text-[var(--color-teal-light)] transition-colors duration-300">
-                                                        {product.name}
-                                                    </h3>
-                                                    <span className="font-secondary text-[11px] font-medium tracking-wider text-[var(--color-teal)] bg-[var(--color-cream-light)] px-2 py-0.5 rounded-full whitespace-nowrap self-center">
-                                                        {product.karat}
-                                                    </span>
-                                                </div>
-
-                                                <p className="font-secondary text-xs text-[var(--color-text-muted)] tracking-wider mb-4">
-                                                    {product.category}
-                                                </p>
-                                            </div>
-                                        </Link>
-
-                                        {/* 2. Floating Wishlist Button placed outside Link context using stopPropagation */}
-                                        <button
-                                            onClick={(e) => {
-                                                e.preventDefault();
-                                                e.stopPropagation(); // Prevents link navigation click trigger
-                                                if (!isLoggedIn) {
-                                                    setIsAuthOpen(true);
-                                                } else {
-                                                    toggleWishlist(product);
-                                                }
-                                            }}
-                                            aria-label={isInWishlist ? "Remove from vault" : "Add to vault"}
-                                            className="absolute top-7 right-7 w-9 h-9 rounded-full bg-white/90 backdrop-blur-md flex items-center justify-center shadow-md text-[var(--color-text-muted)] hover:text-rose-600 border border-[var(--color-border-subtle)] hover:border-transparent transition-all duration-300 cursor-pointer z-20 focus:outline-none"
-                                        >
-                                            <Heart
-                                                className={`w-4 h-4 transition-transform duration-300 group-hover:scale-110 ${isInWishlist ? "fill-rose-600 stroke-rose-600" : "stroke-[1.5]"}`}
-                                            />
-                                        </button>
-
-                                        {/* Action Row Pricing Tag & Intercept Checkout Cart Triggers outside Link context */}
-                                        <div className="flex items-center justify-between mt-auto pt-3 border-t border-[var(--color-border-subtle)] px-1 z-20">
-                                            <div className="flex flex-col">
-                                                <span className="font-secondary text-[10px] text-[var(--color-text-muted)] uppercase tracking-widest leading-none mb-1">
-                                                    Estimated Price
-                                                </span>
-                                                <span className="font-secondary text-sm font-semibold text-[var(--color-text)]">
-                                                    ₹{standardPrice.toLocaleString("en-IN")}
-                                                </span>
-                                            </div>
-
-                                            <button
-                                                onClick={(e) => {
-                                                    e.preventDefault();
-                                                    e.stopPropagation(); // Prevents link navigation click trigger
-                                                    if (!isLoggedIn) {
-                                                        setIsAuthOpen(true);
-                                                    } else {
-                                                        addToCart(product);
-                                                    }
-                                                }}
-                                                className="flex items-center gap-2 bg-[var(--color-teal)] hover:bg-[var(--color-teal-light)] text-white px-4 py-2.5 rounded-md font-secondary text-xs uppercase tracking-widest transition-all duration-300 ease-out border-none cursor-pointer focus:outline-none focus:ring-1 focus:ring-[var(--color-teal)]"
-                                            >
-                                                <ShoppingBag className="w-3.5 h-3.5 stroke-[1.75]" />
-                                                <span>Acquire</span>
-                                            </button>
-                                        </div>
-
-                                    </motion.div>
-                                );
-                            })}
-                        </div>
                     </div>
                 </section>
 
