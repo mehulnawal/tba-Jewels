@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, ShoppingBag, ChevronLeft, ChevronRight } from "lucide-react";
-import primeCollection from '../assets/primeCollection/img1.png';
+import primeCollection from '../assets/primeCollection/img1.webp';
 
 interface Product {
     id: string;
