@@ -42,6 +42,7 @@ import {
 import { AuthModal } from "./AuthModal";
 import PrimeSelection from "../components/PrimeCollection";
 import BestSellerCarousel from "../components/BestSellerCarousel";
+import VisitStore from "../components/VisitStore";
 
 
 gsap.registerPlugin(ScrollTrigger);
@@ -817,6 +818,9 @@ export default function HomePage() {
 
                     </div>
                 </section >
+
+                {/* inside JSX: */}
+                <VisitStore />
 
                 {/* Footer */}
                 <Footer onCategoryChange={setActiveCategory} />
