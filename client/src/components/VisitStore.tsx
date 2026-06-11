@@ -98,7 +98,6 @@ export default function VisitStore() {
                         {[
                             { icon: "📍", label: "Surat, Gujarat" },
                             { icon: "✦", label: "BIS Certified" },
-                            { icon: "↺", label: "Lifetime Exchange" },
                         ].map((item) => (
                             <span
                                 key={item.label}
@@ -175,13 +174,12 @@ export default function VisitStore() {
 
             {/* Bottom Stats Strip */}
             <div
-                className="grid grid-cols-1 sm:grid-cols-3"
+                className="grid grid-cols-2"
                 style={{ borderTop: "1px solid rgba(219,213,181,0.1)" }}
             >
                 {[
                     { num: "10+", label: "Years of Craft" },
                     { num: "100%", label: "BIS Hallmarked" },
-                    { num: "∞", label: "Lifetime Exchange" },
                 ].map((stat, i) => (
                     <div
                         key={stat.label}

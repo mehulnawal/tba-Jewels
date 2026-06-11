@@ -43,6 +43,7 @@ import { AuthModal } from "./AuthModal";
 import PrimeSelection from "../components/PrimeCollection";
 import BestSellerCarousel from "../components/BestSellerCarousel";
 import VisitStore from "../components/VisitStore";
+import BrandPromise from "../components/BrandCredentials";
 
 
 gsap.registerPlugin(ScrollTrigger);
@@ -111,41 +112,64 @@ const TESTIMONIALS: Testimonial[] = [
         review: "Transparent pricing, BIS certified, delivered on time. TBA has completely changed how I buy gold jewelry."
     },
     {
-        id: "3", name: "Ananya Iyer", location: "Bangalore", rating: 5, avatar: AVATAR_ASSETS.a3,
-        review: "The quality speaks for itself. Two years as a loyal customer. The lifetime exchange policy is a true game changer."
-    },
-    {
-        id: "4", name: "Kavita Desai", location: "Ahmedabad", rating: 5, avatar: AVATAR_ASSETS.a4,
+        id: "3", name: "Kavita Desai", location: "Ahmedabad", rating: 5, avatar: AVATAR_ASSETS.a4,
         review: "Purchased earrings as an anniversary gift. The packaging, finish, weight — all premium. Highly recommended."
     },
 ];
 
 const FAQS: FAQ[] = [
     {
-        id: "1", question: "Is TBA jewelry BIS Hallmarked?",
-        answer: "Yes. Every piece sold by TBA carries official BIS hallmarking that certifies gold purity as per Indian government standards."
+        id: "1",
+        question: "What are Lab-Grown Diamonds?",
+        answer: "Lab-grown diamonds are real diamonds created in advanced laboratory environments that perfectly mimic the high-pressure, high-temperature conditions under which diamonds naturally develop deep inside the Earth. They are physically, chemically, and optically identical to natural diamonds. Even professional jewellers and certified gemologists cannot tell the difference with their naked eyes or standard microscopes."
     },
     {
-        id: "2", question: "What karats of gold do you offer?",
-        answer: "We offer jewelry in 9K, 14K, 18K, 22K, and 24K gold. Each product page clearly displays the karat and purity percentage."
+        id: "2",
+        question: "Are Lab Grown Diamonds real?",
+        answer: "Yes, lab-grown diamonds are 100% real diamonds. A diamond is categorized by its chemical structure and composition—not its origin. Both lab-grown and mined diamonds possess the exact same crystalline structure of pure carbon atoms, ensuring that they share the identical properties of genuine diamonds."
     },
     {
-        id: "3", question: "How is the gold price calculated?",
-        answer: "Prices are calculated using live market gold rates multiplied by the gold weight and purity percentage of each piece, plus making charges and stone charges. No hidden fees."
+        id: "3",
+        question: "Can you tell the difference between Lab-Grown Diamonds and Natural Diamonds?",
+        answer: "There is absolutely no visual or physical way to differentiate between a lab diamond and a natural diamond by looking at them. Trained jewellers or experts cannot tell them apart using naked eyes or regular microscopes. Identifying a lab-grown diamond requires specialized, advanced spectroscopic equipment found inside certified gemological laboratories."
     },
     {
-        id: "4", question: "Do you offer a lifetime exchange policy?",
-        answer: "Yes. TBA offers lifetime exchange on all jewelry — zero deductions on making charges, no questions asked, no time limit."
+        id: "4",
+        question: "Are Lab-Grown Diamonds worth buying and do you offer buyback?",
+        answer: "Absolutely. Lab-grown diamonds are worth buying because they are real diamonds that last forever. Just like traditional jewellers offer terms on natural diamonds, TBA offers a reliable value-assurance policy including an 80% buyback and a 100% exchange policy on our lab-grown diamond collections."
     },
     {
-        id: "5", question: "How long does delivery take?",
-        answer: "Standard delivery takes 5–7 business days across India. Express delivery options are available at checkout. All orders are insured and tracked."
+        id: "5",
+        question: "Do Lab-Grown Diamonds cost less than mined diamonds?",
+        answer: "Yes, they do. Lab-grown diamonds generally retail at a significant 60% to 90% discount compared to mined diamonds of equivalent quality. Despite the accessible price point, they are evaluated, graded, and priced using the exact same standard matrix—Cut, Colour, Clarity, and Carat weight."
     },
     {
-        id: "6", question: "Are online payments secure?",
-        answer: "All payments are processed through PCI-DSS compliant payment gateways. We support UPI, credit/debit cards, net banking, and EMI options."
+        id: "6",
+        question: "Are Lab-Grown Diamonds graded and certified?",
+        answer: "Yes. Lab-grown diamonds undergo the same rigorous grading procedures as mined diamonds. They are certified by leading global gemological laboratories, such as IGI, SGL, and EGL. Every single lab-grown diamond piece used by TBA is carefully graded and certified by these renowned, third-party organizations."
     },
+    {
+        id: "7",
+        question: "Are Lab-Grown Diamonds the same as Synthetic Diamonds or Moissanite?",
+        answer: "No, lab-grown diamonds are not diamond simulants like Cubic Zirconia (CZ) or Moissanite, which only imitate the look of a diamond. Lab-grown diamonds are pure carbon crystals and constitute genuine diamonds, completely distinct from synthetic imitations."
+    },
+    {
+        id: "8",
+        question: "Are Lab-Grown Diamonds durable enough to last?",
+        answer: "Diamonds are the hardest known material on Earth, ranking at a maximum 10 on the Mohs Scale of hardness. Lab-grown diamonds share this exact same rank of 10, delivering identical structural strength, hardness, and ultimate durability. You can confidently pass these timeless pieces down to the next generation."
+    },
+    {
+        id: "9",
+        question: "Do Lab-Grown Diamonds change colour, shine, or sparkle over time?",
+        answer: "No, they do not. Lab-grown diamonds will never fade, discolor, lose their brilliance, or turn cloudy over time. Their optical sparkle and natural fire are permanent and timeless."
+    },
+    {
+        id: "10",
+        question: "Do all Lab-Grown Diamonds look alike?",
+        answer: "No. While the growth environment is controlled in modern machines, the diamond crystallization process is entirely organic and natural. Just like mined diamonds, nature dictates the outcome, resulting in unique variances in Cut, Colour, Clarity, and Carat size for every individual piece."
+    }
 ];
+
 
 interface CartItem {
     product: Product;
@@ -572,98 +596,7 @@ export default function HomePage() {
 
 
                 {/* Why Choose Us */}
-                <section className="bg-[var(--color-bg-secondary)]" id="brand-promise-section">
-
-                    {/* Part 1: Why Choose Us */}
-                    <div className="section-padding container">
-                        <div className="text-center mb-16 reveal-section">
-                            <span className="section-label">Our Promise</span>
-                            <h2 className="text-4xl md:text-5xl font-primary text-[var(--color-teal)] font-normal tracking-wide">
-                                Why Choose TBA
-                            </h2>
-                        </div>
-
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 max-w-5xl mx-auto">
-
-                            {/* Card 1 */}
-                            <div className="bg-[var(--color-white)] rounded-lg p-8 border border-[var(--color-border-subtle)] shadow-xs flex flex-col gap-4 reveal-section">
-                                <Shield size={36} className="text-[var(--color-teal)] shrink-0" />
-                                <h3 className="font-primary text-xl font-medium text-[var(--color-teal)]">
-                                    BIS Hallmarked
-                                </h3>
-                                <p className="font-secondary text-sm text-[var(--color-text-secondary)] leading-relaxed">
-                                    Every jewelry item carries raw certification and physical BIS Hallmark verifying gold purity, guaranteeing official government standards.
-                                </p>
-                            </div>
-
-                            {/* Card 2 */}
-                            <div className="bg-[var(--color-white)] rounded-lg p-8 border border-[var(--color-border-subtle)] shadow-xs flex flex-col gap-4 reveal-section">
-                                <RefreshCw size={36} className="text-[var(--color-teal)] shrink-0" />
-                                <h3 className="font-primary text-xl font-medium text-[var(--color-teal)]">
-                                    Lifetime Exchange
-                                </h3>
-                                <p className="font-secondary text-sm text-[var(--color-text-secondary)] leading-relaxed">
-                                    Gain extreme resale flexibility with our policy: exchange or trade-in anytime, with zero deductions on your gold value weight rates.
-                                </p>
-                            </div>
-
-                            {/* Card 3 */}
-                            <div className="bg-[var(--color-white)] rounded-lg p-8 border border-[var(--color-border-subtle)] shadow-xs flex flex-col gap-4 reveal-section">
-                                <Award size={36} className="text-[var(--color-teal)] shrink-0" />
-                                <h3 className="font-primary text-xl font-medium text-[var(--color-teal)]">
-                                    Master Craftsmanship
-                                </h3>
-                                <p className="font-secondary text-sm text-[var(--color-text-secondary)] leading-relaxed">
-                                    Engineered and finished by direct generational artisans pulling centuries of traditional jewelry expertise into every detail.
-                                </p>
-                            </div>
-
-                            {/* Card 4 */}
-                            <div className="bg-[var(--color-white)] rounded-lg p-8 border border-[var(--color-border-subtle)] shadow-xs flex flex-col gap-4 reveal-section">
-                                <TrendingUp size={36} className="text-[var(--color-teal)] shrink-0" />
-                                <h3 className="font-primary text-xl font-medium text-[var(--color-teal)]">
-                                    Live Gold Pricing
-                                </h3>
-                                <p className="font-secondary text-sm text-[var(--color-text-secondary)] leading-relaxed">
-                                    Complete buying transparency. Items prices are calculated directly from market spot-prices, without hidden overhead.
-                                </p>
-                            </div>
-
-                        </div>
-                    </div>
-
-                    {/* Part 2: Brand Promise Stats Strip Container (teal background) */}
-                    <div className="w-full bg-[var(--color-teal)] py-4 md:py-10 text-white border-t border-white/5">
-                        <div className="container max-w-5xl grid grid-cols-2 lg:grid-cols-4 gap-8 justify-items-center">
-
-                            {/* Stat 1 */}
-                            <div className="text-center flex flex-col items-center gap-2 reveal-section">
-                                <span className="font-primary text-4xl m-0 font-bold tracking-tight text-[var(--color-cream)]">100%</span>
-                                <span className="font-secondary text-[10px] tracking-[0.25em] text-white/80 uppercase">BIS HALLMARKED</span>
-                            </div>
-
-                            {/* Stat 2 */}
-                            <div className="text-center flex flex-col items-center gap-2 reveal-section">
-                                <span className="font-primary text-4xl m-0 font-bold tracking-tight text-[var(--color-cream)]">∞</span>
-                                <span className="font-secondary text-[10px] tracking-[0.25em] text-white/80 uppercase">LIFETIME EXCHANGE</span>
-                            </div>
-
-                            {/* Stat 3 */}
-                            <div className="text-center flex flex-col items-center gap-2 reveal-section">
-                                <span className="font-primary text-4xl m-0 font-bold tracking-tight text-[var(--color-cream)]">5 ★</span>
-                                <span className="font-secondary text-[10px] tracking-[0.25em] text-white/80 uppercase">CUSTOMER RATING</span>
-                            </div>
-
-                            {/* Stat 4 */}
-                            <div className="text-center flex flex-col items-center gap-2 reveal-section">
-                                <span className="font-primary text-4xl m-0 font-bold tracking-tight text-[var(--color-cream)]">10+</span>
-                                <span className="font-secondary text-[10px] tracking-[0.25em] text-white/80 uppercase">YEARS OF CRAFT</span>
-                            </div>
-
-                        </div>
-                    </div>
-
-                </section>
+                <BrandPromise />
 
                 {/* Testimonials  */}
                 <section className="section-padding bg-[var(--color-bg)] overflow-hidden" id="testimonials-section">

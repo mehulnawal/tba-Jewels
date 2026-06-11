@@ -134,6 +134,8 @@ export default function Navbar({
     onSearchChange(e.target.value);
   };
 
+  const [hoveredCategory, setHoveredCategory] = React.useState<string | null>(null);
+
   const handleClearSearch = () => {
     setSearchQuery("");
     onSearchChange("");
@@ -156,6 +158,27 @@ export default function Navbar({
     }
   };
 
+
+  const announcements = [
+    "✦ FREE SHIPPING ABOVE ₹25,000 ✦",
+    "✦ BIS HALLMARKED JEWELRY ✦",
+    "✦ LIFETIME EXCHANGE POLICY ✦",
+    "✦ CERTIFIED PURE GOLD ✦",
+    "✦ NO HIDDEN CHARGES ✦"
+  ];
+
+  const [currentSlide, setCurrentSlide] = React.useState(0);
+
+  React.useEffect(() => {
+    if (!isAnnouncementVisible) return;
+
+    const timer = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % announcements.length);
+    }, 3000);
+
+    return () => clearInterval(timer);
+  }, [isAnnouncementVisible]);
+
   return (
 
     // FIX: Outer wrapper is NOT sticky anymore — just a plain column flex
@@ -172,21 +195,31 @@ export default function Navbar({
               animate={{ height: "var(--announcement-height)", opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
               transition={{ duration: 0.25 }}
-              className="w-full bg-[var(--color-teal)] text-[var(--color-cream-light)] overflow-hidden relative flex items-center"
+              className="w-full bg-[var(--color-teal)] text-[var(--color-cream-light)] overflow-hidden relative flex items-center justify-center"
             >
-              <div className="w-full overflow-hidden flex items-center px-10">
-                <div className="ticker-track flex whitespace-nowrap gap-12 font-secondary text-[11px] tracking-[0.25em] uppercase">
-                  <span>✦ FREE SHIPPING ABOVE ₹25,000 ✦ BIS HALLMARKED JEWELRY ✦ LIFETIME EXCHANGE POLICY ✦ CERTIFIED PURE GOLD ✦ NO HIDDEN CHARGES ✦</span>
-                  <span>✦ FREE SHIPPING ABOVE ₹25,000 ✦ BIS HALLMARKED JEWELRY ✦ LIFETIME EXCHANGE POLICY ✦ CERTIFIED PURE GOLD ✦ NO HIDDEN CHARGES ✦</span>
-                </div>
+              {/* Carousel Container */}
+              <div className="w-full max-w-4xl mx-auto flex items-center justify-center px-12 h-full relative overflow-hidden">
+                <AnimatePresence initial={false}>
+                  <motion.div
+                    key={currentSlide}
+                    initial={{ x: "100%", opacity: 0 }}
+                    animate={{ x: 0, opacity: 1 }}
+                    exit={{ x: "-100%", opacity: 0 }}
+                    transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                    className="absolute font-secondary text-[11px] tracking-[0.25em] uppercase text-center select-none whitespace-nowrap"
+                  >
+                    {announcements[currentSlide]}
+                  </motion.div>
+                </AnimatePresence>
               </div>
 
+              {/* Dismiss Button */}
               <button
                 onClick={handleDismissAnnouncement}
-                className="absolute left-0.1 top-1/2 -translate-y-1/2 text-[var(--color-teal)] cursor-pointer transition-colors p-1 bg-white"
+                className="absolute left-4 top-1/2 -translate-y-1/2 text-[var(--color-teal)] cursor-pointer transition-colors p-1 bg-white rounded-full z-10"
                 aria-label="Dismiss announcement"
               >
-                <X size={20} />
+                <X size={16} />
               </button>
             </motion.div>
           )}
@@ -226,7 +259,7 @@ export default function Navbar({
               ) : (
                 // FIX: On mobile only show 18K + 24K to avoid overflow.
                 //      Show all 5 rates on md+.
-                <div className="flex gap-3 md:gap-5 text-[11px] md:text-xs whitespace-nowrap">
+                <div className="flex gap-3 md:gap-5 text-[12px] md:text-sm whitespace-nowrap">
                   <span className="tracking-wider">
                     9K: <strong className="font-mono">₹{goldRates?.["9K"]}</strong>
                   </span>
@@ -249,7 +282,7 @@ export default function Navbar({
               )}
 
               {goldRates?.updatedAt && (
-                <span className="text-[10px] text-[var(--color-text-muted)] shrink-0 hidden lg:inline">
+                <span className="text-[12px] text-[var(--color-text-muted)] shrink-0 hidden lg:inline">
                   Updated:{" "}
                   {new Date(goldRates.updatedAt).toLocaleTimeString([], {
                     hour: "2-digit",
@@ -260,9 +293,9 @@ export default function Navbar({
             </div>
           </div>
         </div>
+
       </div>
 
-      {/* ── STICKY SECTION — only ROW 3 + ROW 4 stick ───────────────────── */}
       <div className="sticky top-0 z-[var(--z-sticky)] w-full">
 
         {/* ROW 3: MAIN NAVIGATION BAR */}
@@ -394,20 +427,29 @@ export default function Navbar({
               {CATEGORIES.map((category) => {
                 const isActive = activeCategory === category;
                 return (
+                  // 1. Loop ke andar aapka clean optimized button element:
                   <button
                     key={category}
                     onClick={() => handleCategoryClick(category)}
-                    className={`font-secondary text-[11px] uppercase tracking-[0.2em] transition-all duration-300 relative py-1 cursor-pointer bg-transparent border-none ${activeCategory === category
+                    className={`font-secondary text-[11px] uppercase tracking-[0.2em] transition-all duration-300 relative py-2 cursor-pointer bg-transparent border-none outline-none group ${activeCategory === category
                       ? "text-[var(--color-text)] font-semibold"
                       : "text-[var(--color-text-muted)] hover:text-[var(--color-text)]"
                       }`}
                   >
-                    {category}
-                    {isActive && (
+                    <span className="relative z-10">{category}</span>
+
+                    {/* A. ACTUAL ACTIVE UNDERLINE: Yeh click hone par smoothly slide karegi */}
+                    {activeCategory === category && (
                       <motion.div
                         layoutId="navbar-category-indicator"
-                        className="absolute bottom-0 left-0 right-0 h-[2.5px] bg-[var(--color-teal)] rounded-full"
+                        className="absolute bottom-0 left-0 right-0 h-[2.5px] bg-[var(--color-teal)] rounded-full z-20"
+                        transition={{ type: "spring", stiffness: 380, damping: 30 }}
                       />
+                    )}
+
+                    {/* B. HOVER UNDERLINE: Pure CSS Tailwind 'group-hover'. Koi line lag ya fading issue nahi */}
+                    {activeCategory !== category && (
+                      <div className="absolute bottom-0 left-0 right-0 h-[2.5px] bg-[var(--color-teal)] opacity-0 scale-x-0 group-hover:opacity-50 group-hover:scale-x-100 transition-all duration-300 ease-out origin-center rounded-full z-10" />
                     )}
                   </button>
                 );

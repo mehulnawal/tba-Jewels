@@ -1,6 +1,7 @@
-import { motion } from "motion/react";
+import React from "react";
+import { motion } from "framer-motion";
 import { SOCIAL_LINKS } from "../constants/assets";
-import { Phone, Mail, MapPin, Instagram, MessageCircle, Heart, Shield, Award } from "lucide-react";
+import { Phone, Mail, MapPin, Instagram, Heart, Shield, Award } from "lucide-react";
 import logo from "../assets/logo/logo2.png";
 
 export default function Footer({ onCategoryChange }: { onCategoryChange: (category: string) => void }) {
@@ -50,6 +51,8 @@ export default function Footer({ onCategoryChange }: { onCategoryChange: (catego
             >
               <Instagram size={18} />
             </motion.a>
+
+            {/* WHATSAPP SOCIAL BUTTON WITH ORIGINAL BRAND SVG */}
             <motion.a
               href={SOCIAL_LINKS.whatsapp}
               target="_blank"
@@ -59,7 +62,13 @@ export default function Footer({ onCategoryChange }: { onCategoryChange: (catego
               aria-label="WhatsApp Hotline"
               id="footer-wa-social-btn"
             >
-              <MessageCircle size={18} />
+              <svg
+                className="w-[18px] h-[18px] fill-white"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.513 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.713-1.455L0 24zm6.59-4.846c1.66.986 3.292 1.499 5.341 1.5 5.382 0 9.764-4.35 9.767-9.694.002-2.59-1.001-5.023-2.825-6.849-1.824-1.825-4.255-2.83-6.847-2.83-5.393 0-9.776 4.35-9.779 9.696-.001 2.146.574 4.211 1.664 5.986l-.999 3.647 3.679-.96zm10.155-6.864c-.266-.134-1.574-.775-1.817-.863-.243-.089-.419-.133-.596.134-.176.265-.685.862-.839 1.039-.154.177-.308.199-.574.065-.266-.134-1.123-.414-2.139-1.32-.79-.704-1.323-1.573-1.478-1.839-.154-.266-.016-.41.118-.543.121-.119.266-.31.4-.465.133-.155.177-.266.266-.443.089-.177.044-.332-.022-.465-.066-.133-.596-1.437-.816-1.968-.215-.518-.432-.448-.596-.456-.154-.008-.331-.01-.508-.01-.177 0-.464.066-.707.332-.243.265-.928.907-.928 2.21 0 1.302.946 2.562 1.078 2.739.133.177 1.86 2.84 4.505 3.987.63.272 1.12.435 1.503.556.632.2 1.208.172 1.662.104.507-.076 1.574-.641 1.795-1.26.221-.619.221-1.149.155-1.26-.066-.11-.242-.177-.508-.31z" />
+              </svg>
             </motion.a>
           </div>
         </div>
@@ -96,19 +105,7 @@ export default function Footer({ onCategoryChange }: { onCategoryChange: (catego
           </ul>
         </div>
 
-        {/* COLUMN 3: POLICIES */}
-        {/* <div className="flex flex-col gap-4">
-          <h4 className="font-secondary text-xs uppercase tracking-[0.3em] !text-[var(--color-cream)] font-bold mb-2">Policies</h4>
-          <ul className="flex flex-col gap-3 font-secondary text-xs ">
-            <li><a href="#" className="hover:text-[var(--color-cream)] hover:pl-1 transition-all duration-300 block">BIS Hallmarking Certificate</a></li>
-            <li><a href="#" className="hover:text-[var(--color-cream)] hover:pl-1 transition-all duration-300 block">Lifetime Exchange & Buyback</a></li>
-            <li><a href="#" className="hover:text-[var(--color-cream)] hover:pl-1 transition-all duration-300 block">Insured Free Shipping Policy</a></li>
-            <li><a href="#" className="hover:text-[var(--color-cream)] hover:pl-1 transition-all duration-300 block">15-Day Easy Refund & Returns</a></li>
-            <li><a href="#" className="hover:text-[var(--color-cream)] hover:pl-1 transition-all duration-300 block">Terms & Conditions</a></li>
-          </ul>
-        </div> */}
-
-        {/* COLUMN 4: DIRECT CONNECT */}
+        {/* COLUMN 3: DIRECT CONNECT */}
         <div className="flex flex-col gap-4">
           <h4 className="font-secondary text-xs uppercase tracking-[0.3em] !text-[var(--color-cream)] font-bold mb-2">Get In Touch</h4>
           <ul className="flex flex-col gap-4 font-secondary text-xs ">
