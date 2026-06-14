@@ -38,6 +38,8 @@ Backend -
 2. IP address access of customer 
 
 
+
+
 Changes done - 
 
 
@@ -48,3 +50,17 @@ Categories list
 5 Products of each category
 
 4 post 4 reel
+
+
+
+Backend Order:
+User Model + DB Connection + Server Setup
+Auth APIs (Signup, Login, Forgot/Reset Password, JWT + Refresh Token)
+JWT Middleware + Role-based Auth (User/Admin)
+User Profile + Address APIs
+Wishlist APIs
+Cart APIs
+Coupon APIs (Admin create/manage + User apply)
+Checkout Preparation
+Banner + Announcement APIs
+Admin User Management
